@@ -1,0 +1,181 @@
+\section{Kaleidoscopic event imaging theory} \label{sec:theory}
+
+Without loss of generality, consider a square pyramid kaleidoscope where each 
+face is a specular surface, 
+and the index of refraction inside the kaleidoscope is $n=1$.
+The base of the pyramid is open, through which light exits the kaleidoscope.
+Corrections for modeling a kaleidoscopic scintillator with $n>1$ include 
+a decreased pyramid height and increased opening angle at the apex, based on $n$.
+The true depth of a measured event would then be corrected for using $n$.
+The image of a scintillation event consists of light emitted directly from the 
+event and from the event's mirror reflections.
+Below, we describe the spatial relationship between an event and its mirror 
+reflections, as well as their image on the sensor using a thin lens model.
+
+
+\subsection{Imaging configuration}
+
+The world coordinate system's origin is set at the pyramid's apex with the 
+$z$-axis directed perpendicular toward the pyramid's base surface.
+The camera coordinate system's origin is at the center of the lens with its 
+$z$-axis directed toward the pyramid in the opposite direction of the world's $z$-axis.
+The $x$ and $y$ axes among the two coordinate systems are in the same directions, 
+so transforming a point between the world and camera coordinate systems is 
+carried out by adding or subtracting the $z$-coordinate with the distance between 
+the lens and the scintillator's apex.
+We denote a $z$-coordinate in the world coordinate system as $z_w$ and camera 
+coordinate system as $z_c$.
+We use a thin lens to model the camera.
+Three important planes to note are the focal plane, the thin lens plane, and the 
+sensor plane.
+The focal plane is set at the pyramid's apex at $z_w=0$ mm.
+A thin lens with diameter $A$ is placed at a distance $S_1$ from the focal plane. 
+The sensor is placed at a distance $S_2$ from the lens.
+The lens' focal length is set to $f=(S_1^{-1}+S_2^{-1})^{-1}$.
+These parameters are illustrated in \cref{fig:optical_config}.
+
+\begin{figure}
+\centering
+\includegraphics[width=.33\linewidth]{optical_config.pdf}
+\caption{\textbf{Imaging parameters and coordinate systems.} 
+The optical configuration consists of a lens with diameter $A$, distance from 
+lens to focal plane $S_1$, and distance from lens to sensor $S_2$. The diameter 
+of an event's image on the sensor is $c$. The camera is focused at the 
+scintillator's apex where the world coordinate system origin is located. The 
+camera coordinate system origin is located at the lens. The figure only shows 
+light emitted directly to the camera.} 
+\label{fig:optical_config}
+\end{figure}
+
+A scintillation event is approximated as a point source of light.
+Since the optical setup is constrained to short imaging distances, 
+the images of an event and its mirror reflections exhibit defocus blur and 
+have nonzero diameters.
+An image's diameter on the sensor varies according to the event's distance from 
+the focal plane, following the circle of confusion model.
+For an event at $(x_0,y_0,z_{c0})$, 
+the circle of confusion model yields
+\begin{equation} \label{eqn:circ_of_conf}
+c=A\frac{S_2}{S_1}\frac{|S_1-z_{c0}|}{z_{c0}}
+\end{equation}
+where $c$ is the image diameter at the sensor.
+
+Light is emitted in all directions from the event.
+Photons may arrive at the camera directly from the event or indirectly after 
+reflecting off mirrors.
+Direct photons form a complete image on the sensor, while indirect photons may 
+form an image that is truncated or completely missing as described below.
+
+
+\subsection{Mirror reflections and apertures}
+
+Consider an event at $\bm{p_0}=(x_0,y_0,z_{w0})$.
+Mirror $k$ with normal vector $\bm{n_k}$ produces a mirror reflection located at 
+\begin{equation}
+\bm{p_k}=T_k\bm{p_0}
+\end{equation}
+where
+\begin{equation} \label{eqn:ref_trans}
+T_k=I_{3\times3} - 2\bm{n_k}\bm{n_k}^T
+\end{equation}
+is the mirror's transformation.
+The mirror reflection of an event is also a point source of light.
+The captured image of the mirror reflection is obtained from the photons that 
+reflect off the mirror and into the camera, exhibiting the same defocus blur as if 
+an event were located at $\bm{p_k}$.
+However, due to the finite mirror size, the image on the sensor may be truncated 
+along lines corresponding to the mirror's edges.
+This occurs when $\bm{p_k}$ is behind another mirror from the camera's perspective.
+The photons that are truncated from the image are those that reflect off the 
+mirror adjacent to mirror $k$ near the shared edge.
+Also, light in higher-order reflections over multiple mirrors may be stopped 
+in previous reflections and also cause image truncations.
+Essentially, mirror $k$ behaves like an aperture to a light source at $\bm{p_k}$. 
+
+For a single reflection, light from $\bm{p_k}$ that does not pass through mirror 
+$k$ does not reach the camera and is truncated from the image.
+\cref{fig:trunc_theory}a and c show a 2D view of the propagation of light over a single reflection without truncations.
+\cref{fig:trunc_theory}b and d show how truncations form.
+A 3D visualization of light truncation is shown in \cref{fig:trunc_teaser}.
+
+
+\begin{figure*}
+\centering
+\includegraphics[width=\linewidth]{trunc_theory.pdf}
+\caption{\textbf{Mirror apertures and image truncations.} 
+An event emits light onto a mirror that reflects into the camera. 
+Some light might not reach the sensor due to finite mirrors and defocus blur.
+(a) The mirror reflection is located beyond the focal plane. 
+All light that forms the mirror reflection reaches the sensor.
+(b) The mirror reflection is located beyond the focal plane. 
+Some light from the mirror reflection is stopped at the mirror's edge and 
+truncated on the sensor.
+(c) The mirror reflection is located within the focal plane.
+All light that forms the mirror reflection reaches the sensor.
+(d) The mirror reflection is located within the focal plane. 
+Some light from the mirror reflection is stopped at the mirror's edge and 
+truncated on the sensor.
+(e) Light from a double mirror reflection is stopped at both mirrors' edges and truncated on the sensor. 
+The mirror for the second reflection is illustrated along the optical axis.} 
+\label{fig:trunc_theory}
+\end{figure*}
+
+
+\begin{figure}
+\centering
+\includegraphics[width=.4\linewidth]{trunc_teaser.jpg}
+\caption{\textbf{Image truncation example in 3D.}
+The image of an event and one mirror reflection is shown. 
+Light corresponding to the mirror reflection is truncated at the mirror's edge, 
+resulting in a truncation line in the image.
+The truncation line only applies to that mirror reflection.}
+\label{fig:trunc_teaser}
+\end{figure}
+
+
+In higher-order reflections, light reflecting off mirror $k$ can 
+reflect off another mirror $l$ and generate mirror reflection 
+at $\bm{p_l}=T_l \bm{p_k}$.
+The light incident on mirror $l$ from $\bm{p_k}$ passes through the aperture 
+of mirror $k$.
+If this light spans a partial area $A_l$ of mirror $l$, then mirror $l$'s aperture is $A_l$.
+Otherwise, mirror $l$'s aperture is simply the mirror.
+Mirror $l$'s aperture affects the light emitted from $\bm{p_l}$ toward another 
+mirror for a higher-order reflection and toward the camera for imaging.
+Higher-order reflections and imaging continue in the same manner.
+A 2D view of truncations from multiple reflections is shown in \cref{fig:trunc_theory}e.
+
+
+\subsection{Image truncations} \label{sec:image_truncations}
+
+Consider an event's mirror reflection located at $\bm{p_k}$ generated from mirror $k$.
+Each edge of the mirror may impose a truncation line on the camera sensor.
+A truncation line on the sensor, $l_\text{sensor}$, is determined as follows.
+Denote a truncation plane, $P_{\text{trunc}}$, that contains $\bm{p_k}$ and the 
+mirror's edge.
+$P_{\text{trunc}}$ blocks light emitted toward the side facing away from the mirror.
+Denote this side using the normal vector $\bm{n_{\text{trunc}}}$.
+Compute the intersection between $P_{\text{trunc}}$ and the focal plane to be the
+truncation line at the focal plane, $l_\text{focal}$.
+Project $\bm{n_{\text{trunc}}}$ onto the focal plane, denoted as 
+$\bm{n_{\text{focal}}}$.
+Scale $l_\text{focal}$ by the magnification, $m=-\frac{S2}{S1}$, to obtain $l_\text{sensor}$.
+Scale $\bm{n_{\text{focal}}}$ by $m$ to obtain $\bm{n_{\text{sensor}}}$.
+
+The truncation side of $l_\text{sensor}$ where photons do not arrive depends on 
+which side of the focal plane that $\bm{p_k}$ is located.
+If $\bm{p_k}$ is beyond the focal plane away from the lens at a distance $d>S_1$ 
+from the lens, 
+then the side of $l_\text{sensor}$ pointed to by $\bm{n_{\text{sensor}}}$ is 
+truncated and contains no photon arrivals (\cref{fig:trunc_theory}b).
+If $\bm{p_k}$ is between the focal plane and lens at a distance $d<S_1$ from the lens, 
+then the side of $l_\text{sensor}$ opposite of $\bm{n_{\text{sensor}}}$ 
+is truncated and contains no photon arrivals (\cref{fig:trunc_theory}d).
+
+The area on the sensor where photons cannot arrive is the union of the
+truncation sides of each truncation line.
+We denote this area as the ``truncation zone" and its complement as the 
+``acceptance zone" (\cref{fig:trunc_theory}b,d,e).
+The event itself has no truncation zone on the sensor because its image is formed 
+by light emitted directly to the camera without reflections.
+

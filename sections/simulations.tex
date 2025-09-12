@@ -1,0 +1,230 @@
+\section{Simulations}
+
+We use a square pyramid with a 20 mm wide base and 5.77 mm height for the 
+kaleidoscopic scintillator's geometry.
+The angle between opposite mirrors at the pyramid's apex is 120 degrees.
+This wide angle geometry is chosen so that photons that undergo two or more 
+reflections do not reach the camera and each mirror generates only one virtual event.
+Thus, there is one real event and up to four virtual events in an image.
+
+\subsection{Image simulation} \label{sec:image_sim}
+
+We simulate the image of an event using the following procedure.
+The scintillator is aligned with its base edges parallel to the sensor edges and centered.
+We set the optical configuration parameters so that the field of view (FOV) and 
+event image distributions approximately match what is observed in experimental 
+data (\cref{sec:experiments}, \cref{fig:capture_results}) by visual inspection. 
+This resulted in $S_1=60$ mm, $S_2=84$ mm, (focal length = 35 mm), $A=25$ mm, $a=0.5$.
+For a given real event location $\bm{p_0}$, compute the virtual event location 
+for each mirror using the mirror's reflection transformation.
+For each event $k$, compute its corresponding $\bm{\mu_k}$ and $\sigma_k$ using \cref{eqn:mu,eqn:stdev}.
+We set a minimum value of $\sigma_k=10$ pixels so that images are not focused 
+onto one pixel when near the focal plane.
+This minimum $\sigma_k$ is also incorporated in both the the grid search and EM algorithm.
+We compute the truncation zone on the sensor for each virtual event.
+For each event (real and virtual), draw 15 photon samples from $\mathcal{N}(\bm{\mu_k},\sigma_k)$ and assign each to the nearest pixel.
+Discard samples that lie in the event's truncation zone or off the sensor.
+If an image has less than 30 photons, do not evaluate this event location.
+%We deem 15 samples per event before discarding to approximately match 
+%experimentally observed counts, as shown in \cref{fig:capture_results}. 
+We simulate a sensor of $1024 \times 1024$ pixels with 16 $\mu$m pixel pitch, 
+which is the same as the hardware used in experiments.
+Algorithms are tested on images with no dark counts and on the same images with 
+added dark counts (noise).
+For simulating noise, a number of dark counts is drawn from $Poisson(5)$ and 
+randomly added to the image.
+
+
+\subsection{Grid search}
+We use a search grid of equispaced points consisting of 8 points in the 
+$z$ dimension over $z_w=0.1$ mm to $z_w=5.25$ mm and 10 points in the $x$-$y$ 
+dimension over $x=-4$ mm to $x=4$ mm and $y=-4$ mm to $y=4$ mm.
+Points outside the kaleidoscope are not included.
+We weight all events in an image equally and set $\bm{\pi}$ as a uniform 
+distribution. $\bm{\pi}$ is not updated in the grid search algorithm.
+
+We evaluate the grid search algorithm on two sets of grids.
+In the ``aligned" set, all event locations lie exactly on a point in the grid search.
+In the ``misaligned" set, the grid search is shifted so that event locations are  
+halfway between adjacent grid search points.
+Due to the kaleidoscope's symmetry, we limit the tested event locations to 
+$x\geq0$ mm and $y\geq0$ mm.
+We also evaluate the performance of incorporating truncations in the 
+probabilistic model by running the grid search with and without setting 
+$r_{ik}=0$ if a photon lies in the truncation zone.
+We denote these two settings using ``trunc $r_{ik}$" and ``not trunc $r_{ik}$", 
+respectively, in the results \cref{tab:sim_results_noise_and_no_noise}.
+
+
+\subsection{EM algorithm}
+
+The EM algorithm is tested on the same event locations and images as the grid 
+search algorithm.
+Optimizing $Q$ with gradient ascent is susceptible to local maxima because $Q$ 
+is nonconvex.
+For a given test location, we initialize the estimated event location,
+$\bm{\tilde{p_0}}$, by randomly sampling a point $d_\text{init}$ mm away from the 
+true location that lies within the scintillator.
+We test two settings with $d_\text{init}=2,3$ mm.
+We also test truncation modelling with $r_{ik}$ like in the grid search experiments.
+The EM algorithm is terminated when the distance between the updated and 
+previous $\bm{\tilde{p_0}}$ is less than $0.1$ mm or once 1000 iterations have occurred.
+
+During one E-step, $r_{ik}$ is computed in \cref{eqn:r_ik} with the current 
+values of $\bm{\tilde{p_0}}$ and $\bm{\pi}$ while incorporating truncations.
+
+During one M-step, $\bm{\tilde{p_0}}$ is updated by optimizing 
+\cref{eqn:opti_prob} using 1000 steps of gradient ascent.
+The corresponding updates to $\bm{\tilde{p_0}}$ and $\bm{\pi}$ are
+$\bm{\tilde{p_0}} := \bm{\tilde{p_0}} + \lambda \nabla_{\bm{p_0}} Q$ 
+where $\lambda=1 \times 10^{-5}$
+and $\pi_k := \frac{1}{N} \sum_{i=0}^N r_{ik}$.
+
+
+\subsection{Simulation results}
+
+We report the error between the predicted and true event locations, 
+$d_{\text{err}}$, in terms of Euclidean distance. 
+The test set consists of 77 event locations.
+\cref{tab:sim_results_noise_and_no_noise} reports the frequencies of errors  
+within a range for the grid search and EM algorithm.
+
+% This is params used with test_grid_sensor5
+\begin{table*}
+\begin{tabular}{ |c|ccccc| } 
+ \hline
+ no noise | with noise  & $d_{\text{err}}=0$ mm & $0<d_{\text{err}}\leq1$ mm & $1<d_{\text{err}}\leq2$ mm & $2<d_{\text{err}}\leq3$ mm & $d_{\text{err}}>3$ mm \\ 
+ \hline
+ Grid search & & & & & \\
+ aligned, trunc $r_{ik}$        & 77 | 61 & 0 | 1 & 0 | 7 & 0 | 5 & 0 | 3 \\ 
+ aligned, not trunc $r_{ik}$    & 75 | 64  & 2 | 4 & 0 | 1 & 0 | 3 & 0 | 5 \\ 
+ misaligned, trunc $r_{ik}$     & 0 | 0  & 75 | 58 & 2 | 9 & 0 | 5 & 0 | 5 \\
+ misaligned, not trunc $r_{ik}$ & 0 | 0  & 76 | 65 & 0 | 6 & 1 | 2 & 0 | 4 \\
+ \hline
+ EM algorithm & & & & & \\
+ $d_\text{init}=1$, trunc $r_{ik}$       & 0 | 0  & 67 | 42 & 10 | 20 & 0 | 5 & 0 | 10 \\
+ $d_\text{init}=1$, not trunc $r_{ik}$   & 0 | 0  & 68 | 58 & 8 | 15 & 0 | 0 & 1 | 4 \\
+ $d_\text{init}=2$, trunc $r_{ik}$       & 0 | 0  & 29 | 20 & 38 | 33 & 3 | 11 & 7 | 13 \\
+ $d_\text{init}=2$, not trunc $r_{ik}$   & 0 | 0  & 44 | 34 & 25 | 28 & 5 | 5 & 3 | 10 \\
+ $d_\text{init}=3$, trunc $r_{ik}$       & 0 | 0  & 12 | 6 & 36 | 25 & 19 | 13 & 10 | 33 \\
+ $d_\text{init}=3$, not trunc $r_{ik}$   & 0 | 0  & 17 | 10 & 30 | 36 & 10 | 10 & 20 | 21 \\
+ \hline
+\end{tabular}
+\caption{\textbf{Simulation localization error.} The frequencies of localization 
+error ($d_{\text{err}}$) within a range for each algorithm and testing 
+configuration. The left side and right sides of a column correspond to images 
+without and with added dark counts, respectively.}
+\label{tab:sim_results_noise_and_no_noise}
+\end{table*}
+
+
+\iffalse
+% This uses the old gradient descent bugged gradient (but working well)
+% This is params used with test_grid_sensor5
+\begin{table*}
+\begin{tabular}{ |c|ccccc| } 
+ \hline
+ no noise | with noise  & $d_{\text{err}}=0$ mm & $0<d_{\text{err}}\leq1$ mm & $1<d_{\text{err}}\leq2$ mm & $2<d_{\text{err}}\leq3$ mm & $d_{\text{err}}>3$ mm \\ 
+ \hline
+ Grid search & & & & & \\
+ aligned, trunc $r_{ik}$        & 77 | 61 & 0 | 1 & 0 | 7 & 0 | 5 & 0 | 3 \\ 
+ aligned, not trunc $r_{ik}$    & 75 | 64  & 2 | 4 & 0 | 1 & 0 | 3 & 0 | 5 \\ 
+ misaligned, trunc $r_{ik}$     & 0 | 0  & 75 | 58 & 2 | 9 & 0 | 5 & 0 | 5 \\
+ misaligned, not trunc $r_{ik}$ & 0 | 0  & 76 | 65 & 0 | 6 & 1 | 2 & 0 | 4 \\
+ \hline
+ EM algorithm & & & & & \\
+ $d_\text{init}=2$, trunc $r_{ik}$       & 0 | 0  & 66 | 59 & 11 | 17 & 0 | 1 & 0 | 0 \\
+ $d_\text{init}=2$, not trunc $r_{ik}$   & 0 | 0  & 52 | 53 & 20 | 18 & 0 | 1 & 5 | 5 \\
+ $d_\text{init}=3$, trunc $r_{ik}$       & 0 | 0  & 45 | 45 & 29 | 28 & 3 | 3 & 0 | 1 \\
+ $d_\text{init}=3$, not trunc $r_{ik}$   & 0 | 0  & 39 | 40 & 20 | 20 & 8 | 5 & 10 | 12 \\
+ \hline
+\end{tabular}
+\caption{\textbf{Simulation localization error.} The frequencies of localization 
+error ($d_{\text{err}}$) within a range for each algorithm and testing 
+configuration. The left side and right sides of a column correspond to images 
+without and with added dark counts, respectively.}
+\label{tab:sim_results_noise_and_no_noise}
+\end{table*}
+\fi
+
+
+
+
+\iffalse
+% THIS IS PARAMS USED WITH test_grid_sensor3
+\begin{table*}
+\begin{tabular}{ |c|ccccc| } 
+ \hline
+ no noise | with noise  & $d_{\text{err}}=0$ mm & $0<d_{\text{err}}\leq1$ mm & $1<d_{\text{err}}\leq2$ mm & $2<d_{\text{err}}\leq3$ mm & $d_{\text{err}}>3$ mm \\ 
+ \hline
+ Grid search & & & & & \\
+ aligned, trunc $r_{ik}$        & 115 | 42 & 9 | 10 & 5 | 21 & 0 | 24 & 0 | 32 \\ 
+ aligned, not trunc $r_{ik}$    & 98 | 44  & 18 | 14 & 12 | 21 & 1 | 18 & 0 | 32 \\ 
+ misaligned, trunc $r_{ik}$     & 0 | 0  & 122 | 35 & 4 | 32 & 3 | 22 & 0 | 40 \\
+ misaligned, not trunc $r_{ik}$ & 0 | 0  & 117 | 46 & 10 | 28 & 1 | 18 & 1 | 37 \\
+ \hline
+ EM algorithm & & & & & \\
+ $d_\text{init}=2$, trunc $r_{ik}$       & 0 | 0  & 90 | 58 & 39 | 46 & 0 | 6 & 0 | 19 \\
+ $d_\text{init}=2$, not trunc $r_{ik}$   & 0 | 0  & 82 | 59 & 42 | 33 & 1 | 5 & 0 | 32 \\
+ $d_\text{init}=3$, trunc $r_{ik}$       & 0 | 0  & 75 | 42 & 40 | 51 & 14 | 15 & 0 | 21 \\
+ $d_\text{init}=3$, not trunc $r_{ik}$   & 0 | 0  & 63 | 43 & 35 | 28 & 21 | 24 & 10 | 34 \\
+ \hline
+\end{tabular}
+\caption{\textbf{Simulation localization error.} The frequencies of localization 
+error ($d_{\text{err}}$) within a range for each algorithm and testing 
+configuration. The left side and right sides of a column correspond to images 
+without and with added dark counts, respectively.}
+\label{tab:sim_results_noise_and_no_noise_OLD}
+\end{table*}
+\fi
+
+
+
+\iffalse
+\begin{table*}
+\begin{tabular}{ |c|ccccc| } 
+ \hline
+       & $d_{\text{err}}=0$ mm & $0<d_{\text{err}}\leq1$ mm & $1<d_{\text{err}}\leq2$ mm & $2<d_{\text{err}}\leq3$ mm & $d_{\text{err}}>3$ mm \\ 
+ \hline
+ Grid search & & & & & \\
+ aligned, trunc $r_{ik}$        & 115 & 9   & 5  & 0 & 0 \\ 
+ aligned, not trunc $r_{ik}$    & 98  & 18  & 12 & 1 & 0 \\ 
+ misaligned, trunc $r_{ik}$     & 0   & 122 & 4  & 3 & 0 \\
+ misaligned, not trunc $r_{ik}$ & 0   & 117 & 10 & 1 & 1 \\
+ \hline
+ EM algorithm & & & & & \\
+ $d_\text{init}=2$, trunc $r_{ik}$       & 0   & 90 & 39 & 0 & 0 \\
+ $d_\text{init}=2$, not trunc $r_{ik}$   & 0   & 82 & 42 & 1 & 0 \\
+ $d_\text{init}=3$, trunc $r_{ik}$       & 0   & 75 & 40 & 14 & 0 \\
+ $d_\text{init}=3$, not trunc $r_{ik}$   & 0   & 63 & 35 & 21 & 10 \\
+ \hline
+\end{tabular}
+\caption{\textcolor{red}{ADD CAPTION!!!!!!!!! No dark counts in this table.}}
+\label{tab:sim_results}
+\end{table*}
+\fi
+
+
+\iffalse
+\begin{table*}
+\begin{tabular}{ |c|ccccc| } 
+ \hline
+       & $d_{\text{err}}=0$ mm & $0<d_{\text{err}}\leq1$ mm & $1<d_{\text{err}}\leq2$ mm & $2<d_{\text{err}}\leq3$ mm & $d_{\text{err}}>3$ mm \\ 
+ \hline
+ Grid search & & & & & \\
+ aligned, trunc $r_{ik}$        & 42 & 10   & 21  & 24 & 32 \\ 
+ aligned, not trunc $r_{ik}$    & 44  & 14  & 21 & 18 & 32 \\ 
+ misaligned, trunc $r_{ik}$     & 0   & 35 & 32  & 22 & 40 \\
+ misaligned, not trunc $r_{ik}$ & 0   & 46 & 28 & 18 & 37 \\
+ \hline
+ EM algorithm & & & & & \\
+ $d_\text{init}=2$, trunc $r_{ik}$       & 0   & 58 & 46 & 6 & 19 \\
+ $d_\text{init}=2$, not trunc $r_{ik}$   & 0   & 59 & 33 & 5 & 32 \\
+ $d_\text{init}=3$, trunc $r_{ik}$       & 0   & 42 & 51 & 15 & 21 \\
+ $d_\text{init}=3$, not trunc $r_{ik}$   & 0   & 43 & 28 & 24 & 34 \\
+ \hline
+\end{tabular}
+\caption{\textcolor{red}{ADD CAPTION!!!!!!!!! Dark counts are in this table.}}
+\label{tab:sim_results_dark_counts}
+\end{table*}
+\fi

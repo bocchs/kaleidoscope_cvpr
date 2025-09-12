@@ -1,0 +1,328 @@
+\documentclass{article}
+%\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{wasysym}
+\usepackage{xcolor}
+\usepackage{bm}
+\usepackage{bbm}
+\usepackage{gensymb}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage[superscript,nomove]{cite}
+\usepackage{hyperref}
+\usepackage{multirow}
+\usepackage{enumitem}
+\usepackage[margin=1in]{geometry}
+\usepackage[linesnumbered,ruled,vlined]{algorithm2e}
+\makeatletter 
+\g@addto@macro{\@algocf@init}{\SetKwInOut{Parameter}{Arguments}} 
+\makeatother 
+\graphicspath{{figures/}}
+\usepackage{subfiles} % Best loaded last in the preamble
+
+\usepackage{float}
+
+\renewcommand{\figurename}{Supplementary Figure}
+\renewcommand{\tablename}{Supplementary Table}
+\renewcommand{\refname}{Supplementary References}
+
+%\usepackage{authblk}
+
+\usepackage{xr}
+\externaldocument{main}
+
+
+\begin{document}
+
+
+\title{Kaleidoscopic Scintillation Event Imaging \\
+\large Derivations}
+
+\author{}
+%\author[1]{Alex Bocchieri}
+%\author[2,3]{Andreas Velten}
+
+%\affil[1]{Department of Computer Sciences, University of Wisconsin - Madison, Madison, WI, USA}
+%\affil[2]{Department of Electrical and Computer Engineering, University of Wisconsin - Madison, Madison, WI, USA}
+%\affil[3]{Department of Biostatistics and Medical Informatics, University of Wisconsin - Madison, Madison, WI, USA}
+
+
+\date{}
+
+\maketitle
+
+\section{Likelihood}
+
+Denote an event location at $\bm{p_0}=(x_0,y_0,z_{w0})$ in world coordinates (origin at pyramid apex).
+In these derivations, we use camera coordinates (origin at lens). 
+To transform from world to camera coordinates, apply $z_c = z_{lens} - z_w$.
+The event's mirror reflection $k$ is located at $\bm{p_k}=(x_k,y_k,z_k)=T_k\bm{p_0}$.
+$\alpha_{xyk}$ denotes the coefficient in $T_k$ corresponding to $x_0$ and $y_k$.
+$k=0$ refers to the event itself, and not a mirror reflection.
+These derivations assume $\bm{\mu_k} = \left[-\frac{S_2}{z_k} x_k, -\frac{S_2}{z_k} y_k\right]$. 
+%Modifications have to be made if using $\bm{\mu_k} = \left[\frac{S_2}{z_k} x_k, \frac{S_2}{z_k} y_k\right]$.
+
+\begin{align}
+x_k = \alpha_{xxk}x_0 + \alpha_{xyk}y_0 + \alpha_{xzk}z_{w0}
+\end{align}
+\begin{align}
+y_k = \alpha_{yxk}x_0 + \alpha_{yyk}y_0 + \alpha_{yzk}z_{w0}
+\end{align}
+\begin{align}
+z_k = z_\text{lens} - (\alpha_{zxk}x_0 + \alpha_{zyk}y_0 + \alpha_{zzk}z_{w0})
+\end{align}
+
+
+\begin{align}
+\bm{\mu_k} = \left[-\frac{S_2}{z_k} x_k, -\frac{S_2}{z_k} y_k\right]
+\end{align}
+\begin{align}
+\sigma_k = a \frac{AS_2}{S_1} \frac{|S_1-z_k|}{z_k}
+\end{align}
+
+
+\begin{align}
+L(\bm{\theta};\bm{t},\bm{z}) &= \prod_{i=1}^N \prod_{k=0}^K \left[ \pi_k \mathcal{N}(\bm{t_i};\bm{\mu_k},\sigma_k^2) \right]^{\mathbbm{1}{(z_i=k)}} \\
+&= \prod_{i=1}^N \prod_{k=0}^K \left[ \pi_k \frac{1}{2\pi{\sigma_k}^2} \text{exp}\left( -\frac{1}{2{\sigma_k}^2} (\bm{t_i}-\bm{\mu_k})^T(\bm{t_i}-\bm{\mu_k}) \right) \right]^{\mathbbm{1}{(z_i=k)}}
+\end{align}
+
+\begin{align}
+(\bm{t_i}-\bm{\mu_k})^T(\bm{t_i}-\bm{\mu_k}) &= {t_{ix}}^2 - 2t_{ix}\left(-S_2\frac{x_k}{z_{k}}\right) + \left(-S_2\frac{x_k}{z_{k}}\right)^2 + {t_{iy}}^2 - 2t_{iy}\left(-S_2\frac{y_k}{z_{k}}\right) + \left(-S_2\frac{y_k}{z_{k}}\right)^2 \\
+&= {t_{ix}}^2 + 2t_{ix}S_2\frac{x_k}{z_{k}} + {S_2}^2\left(\frac{x_k}{z_{k}}\right)^2 + {t_{iy}}^2 + 2t_{iy}S_2\frac{y_k}{z_{k}} + {S_2}^2\left(\frac{y_k}{z_{k}}\right)^2
+\end{align}
+
+
+\begin{align}
+Q = \sum_i \sum_k r_{ik} \left[ \text{log}\pi_k - \text{log}(2\pi{\sigma_k}^2) - \frac{{\sigma_k}^{-2}}{2}(\bm{t_i}-\bm{\mu_k})^T(\bm{t_i}-\bm{\mu_k}) \right]
+\end{align}
+
+\begin{align}
+\frac{x_k}{z_k} = \frac{\alpha_{xxk}x_0 + \alpha_{xyk}y_0 + \alpha_{xzk}z_0}{z_\text{lens} - (\alpha_{zxk}x_0 + \alpha_{zyk}y_0 + \alpha_{zzk}z_0)}
+\end{align}
+
+\begin{align}
+\frac{y_k}{z_k} = \frac{\alpha_{yxk}x_0 + \alpha_{yyk}y_0 + \alpha_{yzk}z_0}{z_\text{lens} - (\alpha_{zxk}x_0 + \alpha_{zyk}y_0 + \alpha_{zzk}z_0)}
+\end{align}
+
+
+
+$u_x = x_k = \alpha_{xxk}x_0 + \alpha_{xyk}y_0 + \alpha_{xzk}z_0$
+
+${u_x}'(x_0) = \alpha_{xxk}$
+
+${u_x}'(y_0) = \alpha_{xyk}$
+
+${u_x}'(z_0) = \alpha_{xzk}$
+
+$u_y = y_k = \alpha_{yxk}x_0 + \alpha_{yyk}y_0 + \alpha_{yzk}z_0$
+
+${u_y}'(x_0) = \alpha_{yxk}$
+
+${u_y}'(y_0) = \alpha_{yyk}$
+
+${u_y}'(z_0) = \alpha_{yzk}$
+
+$v_z = z_k = z_\text{lens} - (\alpha_{zxk}x_0 + \alpha_{zyk}y_0 + \alpha_{zzk}z_0)$
+
+${v_z}'(x_0) = -\alpha_{zxk}$
+
+${v_z}'(y_0) = -\alpha_{zyk}$
+
+${v_z}'(z_0) = -\alpha_{zzk}$
+
+\begin{align}
+\frac{\partial}{\partial x_0}\left(\frac{x_k}{z_k}\right) = \frac{{u_x}'v_z -u_x{v_z}'}{v^2}  = \frac{\alpha_{xxk} z_k + \alpha_{zxk} x_k}{{z_k}^2}
+\end{align}
+
+\begin{align}
+\frac{\partial}{\partial y_0}\left(\frac{x_k}{z_k}\right) = \frac{\alpha_{xyk} z_k + \alpha_{zyk} x_k}{{z_k}^2}
+\end{align}
+
+\begin{align}
+\frac{\partial}{\partial z_0}\left(\frac{x_k}{z_k}\right) = \frac{\alpha_{xzk} z_k + \alpha_{zzk} x_k}{{z_k}^2}
+\end{align}
+
+
+
+
+\begin{align}
+\frac{\partial}{\partial x_0}\left(\frac{y_k}{z_k}\right) = \frac{{u_y}'v_z -u_y{v_z}'}{v^2}  = \frac{\alpha_{yxk} z_k + \alpha_{zxk} y_k}{{z_k}^2}
+\end{align}
+
+\begin{align}
+\frac{\partial}{\partial y_0}\left(\frac{y_k}{z_k}\right) = \frac{\alpha_{yyk} z_k + \alpha_{zyk} y_k}{{z_k}^2}
+\end{align}
+
+\begin{align}
+\frac{\partial}{\partial z_0}\left(\frac{y_k}{z_k}\right) = \frac{\alpha_{yzk} z_k + \alpha_{zzk} y_k}{{z_k}^2}
+\end{align}
+
+
+
+
+\begin{align}
+\frac{\partial}{\partial x_0}\left(\left(\frac{x_k}{z_k}\right)^2\right) = 2 \frac{x_k}{z_k} \frac{\partial}{\partial x_0}\left(\frac{x_k}{z_k}\right)
+\end{align}
+
+\begin{align}
+\frac{\partial}{\partial y_0}\left(\left(\frac{x_k}{z_k}\right)^2\right) = 2 \frac{x_k}{z_k} \frac{\partial}{\partial y_0}\left(\frac{x_k}{z_k}\right)
+\end{align}
+
+\begin{align}
+\frac{\partial}{\partial z_0}\left(\left(\frac{x_k}{z_k}\right)^2\right) = 2 \frac{x_k}{z_k} \frac{\partial}{\partial z_0}\left(\frac{x_k}{z_k}\right)
+\end{align}
+
+
+
+
+\begin{align}
+\frac{\partial}{\partial x_0}\left(\left(\frac{y_k}{z_k}\right)^2\right) = 2 \frac{y_k}{z_k} \frac{\partial}{\partial x_0}\left(\frac{y_k}{z_k}\right)
+\end{align}
+
+\begin{align}
+\frac{\partial}{\partial y_0}\left(\left(\frac{y_k}{z_k}\right)^2\right) = 2 \frac{y_k}{z_k} \frac{\partial}{\partial y_0}\left(\frac{y_k}{z_k}\right)
+\end{align}
+
+\begin{align}
+\frac{\partial}{\partial z_0}\left(\left(\frac{y_k}{z_k}\right)^2\right) = 2 \frac{y_k}{z_k} \frac{\partial}{\partial z_0}\left(\frac{y_k}{z_k}\right)
+\end{align}
+
+
+
+
+
+\begin{align}
+\sigma_k = a \frac{AS_2}{S_1} \frac{|S_1-z_k|}{z_k}
+\end{align}
+
+$ \frac{|S_1-z_k|}{z_k} = \frac{|S_1 - z_\text{lens} + \alpha_{zxk}x_0 + \alpha_{zyk}y_0 + \alpha_{zzk}z_0|}{z_\text{lens} - (\alpha_{zxk}x_0 + \alpha_{zyk}y_0 + \alpha_{zzk}z_0)} $
+
+$ u = S_1 - z_\text{lens} + \alpha_{zxk}x_0 + \alpha_{zyk}y_0 + \alpha_{zzk}z_0 $
+
+
+\begin{align}
+\frac{\partial \sigma_k}{\partial x_0} = a\frac{AS_2}{S_1} \frac{\partial}{\partial x_0} \frac{|S_1-z_k|}{z_k} =  a\frac{AS_2}{S_1} \frac{\alpha_{zxk}sign(u)z_k - |u|(-\alpha_{zxk})}{{z_k}^2} =  a\frac{AS_2}{S_1} \frac{\alpha_{zxk}sign(u)z_k + \alpha_{zxk}|u|}{{z_k}^2}
+\end{align}
+
+\begin{align}
+\frac{\partial \sigma_k}{\partial y_0} = a\frac{AS_2}{S_1} \frac{\partial}{\partial y_0} \frac{|S_1-z_k|}{z_k} =  a\frac{AS_2}{S_1} \frac{\alpha_{zyk}sign(u)z_k + \alpha_{zyk}|u|}{{z_k}^2}
+\end{align}
+
+\begin{align}
+\frac{\partial \sigma_k}{\partial z_0} =  a\frac{AS_2}{S_1} \frac{\partial}{\partial z_0} \frac{|S_1-z_k|}{z_k} =   a\frac{AS_2}{S_1} \frac{\alpha_{zzk}sign(u)z_k + \alpha_{zzk}|u|}{{z_k}^2}
+\end{align}
+
+
+\begin{align}
+Q &= \sum_i \sum_k r_{ik} \left[ \text{log}\pi_k - \text{log}(2\pi{\sigma_k}^2) - \frac{{\sigma_k}^{-2}}{2}(\bm{t_i}-\bm{\mu_k})^T(\bm{t_i}-\bm{\mu_k}) \right] \\
+&= \sum_i \sum_k r_{ik} \left[ \text{log}\pi_k - \text{log}(2\pi{\sigma_k}^2) - \frac{{\sigma_k}^{-2}}{2} \left({t_{ix}}^2 + 2t_{ix}S_2\frac{x_k}{z_k} + {S_2}^2\left(\frac{x_k}{z_k}\right)^2 + {t_{iy}}^2 + 2t_{iy}S_2\frac{y_k}{z_k} + {S_2}^2\left(\frac{y_k}{z_k}\right)^2 \right) \right]
+\end{align}
+
+\begin{equation}
+f(x_k,y_k,z_k) = \left({t_{ix}}^2 + 2t_{ix}S_2\frac{x_k}{z_k} + {S_2}^2\left(\frac{x_k}{z_k}\right)^2 + {t_{iy}}^2 + 2t_{iy}S_2\frac{y_k}{z_k} + {S_2}^2\left(\frac{y_k}{z_k}\right)^2 \right)
+\end{equation}
+
+\begin{equation}
+\frac{\partial f}{\partial x_0} = 2t_{ix}S_2 \frac{\partial}{\partial x_0} \left(\frac{x_k}{z_k}\right) + {S_2}^2 \frac{\partial}{\partial x_0}\left(\left(\frac{x_k}{z_k}\right)^2\right) + 2t_{iy}S_2 \frac{\partial}{\partial x_0} \left(\frac{y_k}{z_k}\right) + {S_2}^2 \frac{\partial}{\partial x_0}\left(\left(\frac{y_k}{z_k}\right)^2\right)
+\end{equation}
+
+\begin{equation}
+\frac{\partial f}{\partial y_0} = 2t_{ix}S_2 \frac{\partial}{\partial y_0} \left(\frac{x_k}{z_k}\right) + {S_2}^2 \frac{\partial}{\partial y_0}\left(\left(\frac{x_k}{z_k}\right)^2\right) + 2t_{iy}S_2 \frac{\partial}{\partial y_0} \left(\frac{y_k}{z_k}\right) + {S_2}^2 \frac{\partial}{\partial y_0}\left(\left(\frac{y_k}{z_k}\right)^2\right)
+\end{equation}
+
+\begin{equation}
+\frac{\partial f}{\partial z_0} = 2t_{ix}S_2 \frac{\partial}{\partial z_0} \left(\frac{x_k}{z_k}\right) + {S_2}^2 \frac{\partial}{\partial z_0}\left(\left(\frac{x_k}{z_k}\right)^2\right) + 2t_{iy}S_2 \frac{\partial}{\partial z_0} \left(\frac{y_k}{z_k}\right) + {S_2}^2 \frac{\partial}{\partial z_0}\left(\left(\frac{y_k}{z_k}\right)^2\right)
+\end{equation}
+
+\begin{align} 
+\frac{\partial Q}{\partial x_0} = \sum_i \sum_k r_{ik} \left[ -2{\sigma_k}^{-1}\frac{\partial \sigma_k}{\partial x_0} - \left( -{\sigma_k}^{-3} \frac{\partial \sigma_k}{\partial x_0}f + \frac{{\sigma_k}^{-2}}{2} \frac{\partial f}{\partial x_0}  \right) \right] 
+\end{align}
+
+\begin{align} \
+\frac{\partial Q}{\partial y_0} = \sum_i \sum_k r_{ik} \left[ -2{\sigma_k}^{-1}\frac{\partial \sigma_k}{\partial y_0} - \left( -{\sigma_k}^{-3} \frac{\partial \sigma_k}{\partial y_0}f + \frac{{\sigma_k}^{-2}}{2} \frac{\partial f}{\partial y_0}  \right) \right] 
+\end{align}
+
+\begin{align} 
+\frac{\partial Q}{\partial z_0} = \sum_i \sum_k r_{ik} \left[ -2{\sigma_k}^{-1}\frac{\partial \sigma_k}{\partial z_0} - \left( -{\sigma_k}^{-3} \frac{\partial \sigma_k}{\partial z_0}f + \frac{{\sigma_k}^{-2}}{2} \frac{\partial f}{\partial z_0}  \right) \right] 
+\end{align}
+
+
+\section{Weighted Likelihood}
+
+$w_i$ is the weight assigned to photon sample $i$.
+$w_i = \sum_{j \in S_i^q} \text{exp} \left( -\frac{||\bm{t_i}-\bm{t_j}||_2^2}{\nu} \right)$
+where $S_i^q$ is the set of $q$ nearest neighbors of photon $i$, and $\nu$ is a 
+positive scalar.
+
+\begin{align}
+L(\bm{\theta};\bm{t},\bm{z}) &= \prod_{i=1}^N \prod_{k=0}^K \left[ \pi_k \mathcal{N}(\bm{t_i};\bm{\mu_k},\frac{1}{w_i}\sigma_k^2) \right]^{\mathbbm{1}{(z_i=k)}} \\
+&= \prod_{i=1}^N \prod_{k=0}^K \left[ \pi_k \frac{w_i}{2\pi{\sigma_k}^2} \text{exp}\left( -\frac{w_i}{2{\sigma_k}^2} (\bm{t_i}-\bm{\mu_k})^T(\bm{t_i}-\bm{\mu_k}) \right) \right]^{\mathbbm{1}{(z_i=k)}}
+\end{align}
+
+\begin{align}
+Q = \sum_i \sum_k r_{ik} \left[ \text{log}(\pi_k) + \text{log}(w_i) - \text{log}(2\pi{\sigma_k}^2) - \frac{w_i{\sigma_k}^{-2}}{2}(\bm{t_i}-\bm{\mu_k})^T(\bm{t_i}-\bm{\mu_k}) \right]
+\end{align}
+
+\begin{align}
+\frac{\partial Q}{\partial x_0} = \sum_i \sum_k r_{ik} \left[ -2{\sigma_k}^{-1}\frac{\partial \sigma_k}{\partial x_0} - w_i\left( -{\sigma_k}^{-3} \frac{\partial \sigma_k}{\partial x_0}f + \frac{{\sigma_k}^{-2}}{2} \frac{\partial f}{\partial x_0}  \right) \right] 
+\end{align}
+
+\begin{align}
+\frac{\partial Q}{\partial y_0} = \sum_i \sum_k r_{ik} \left[ -2{\sigma_k}^{-1}\frac{\partial \sigma_k}{\partial y_0} - w_i\left( -{\sigma_k}^{-3} \frac{\partial \sigma_k}{\partial y_0}f + \frac{{\sigma_k}^{-2}}{2} \frac{\partial f}{\partial y_0}  \right) \right] 
+\end{align}
+
+\begin{align}
+\frac{\partial Q}{\partial z_0} = \sum_i \sum_k r_{ik} \left[ -2{\sigma_k}^{-1}\frac{\partial \sigma_k}{\partial z_0} - w_i\left( -{\sigma_k}^{-3} \frac{\partial \sigma_k}{\partial z_0}f + \frac{{\sigma_k}^{-2}}{2} \frac{\partial f}{\partial z_0}  \right) \right] 
+\end{align}
+
+
+\iffalse
+\section{Regularized Objective}
+
+Regularized objective function $R$, where $\bm{\mu_k}^0$ is the centroid obtained from kmeans corresponding to event/mirror reflection $k$ during initialization.
+
+\begin{align}
+R = Q - \lambda \sum_{k=0}^K \left \lVert \bm{\mu_k} - \bm{\mu_k}^0 \right \rVert_2^2
+\end{align}
+
+\begin{align}
+g_k = \left \lVert \bm{\mu_k} - \bm{\mu_k}^0 \right \rVert_2^2
+= (\mu_{kx}-\mu_{kx}^0)^2 + (\mu_{ky}-\mu_{ky}^0)^2
+= \left(\left(-S_2\frac{x_k}{z_{k}}\right)-\mu_{kx}^0\right)^2 + \left(\left(-S_2\frac{y_k}{z_{k}}\right)-\mu_{ky}^0\right)^2
+\end{align}
+
+\begin{align}
+\frac{\partial g_k}{\partial x_0} = 2\left(-S_2\frac{x_k}{z_k} - \mu_{kx}^0\right)\left(-S_2\frac{\partial}{\partial x_0}\left(\frac{x_k}{z_k}\right)\right) + 2\left(-S_2\frac{y_k}{z_k} - \mu_{ky}^0\right)\left(-S_2\frac{\partial}{\partial x_0}\left(\frac{y_k}{z_k}\right)\right)
+\end{align}
+
+\begin{align}
+\frac{\partial g_k}{\partial y_0} = 2\left(-S_2\frac{x_k}{z_k} - \mu_{kx}^0\right)\left(-S_2\frac{\partial}{\partial y_0}\left(\frac{x_k}{z_k}\right)\right) + 2\left(-S_2\frac{y_k}{z_k} - \mu_{ky}^0\right)\left(-S_2\frac{\partial}{\partial y_0}\left(\frac{y_k}{z_k}\right)\right)
+\end{align}
+
+\begin{align}
+\frac{\partial g_k}{\partial z_0} = 2\left(-S_2\frac{x_k}{z_k} - \mu_{kx}^0\right)\left(-S_2\frac{\partial}{\partial z_0}\left(\frac{x_k}{z_k}\right)\right) + 2\left(-S_2\frac{y_k}{z_k} - \mu_{ky}^0\right)\left(-S_2\frac{\partial}{\partial z_0}\left(\frac{y_k}{z_k}\right)\right)
+\end{align}
+
+
+\begin{align}
+\frac{\partial R}{\partial x_0} =  \frac{\partial Q}{\partial x_0} - \lambda \sum_{k=0}^K \frac{\partial g_k}{\partial x_0}
+\end{align}
+
+\begin{align}
+\frac{\partial R}{\partial y_0} =  \frac{\partial Q}{\partial y_0} - \lambda \sum_{k=0}^K \frac{\partial g_k}{\partial y_0}
+\end{align}
+
+\begin{align}
+\frac{\partial R}{\partial z_0} =  \frac{\partial Q}{\partial z_0} - \lambda \sum_{k=0}^K \frac{\partial g_k}{\partial z_0}
+\end{align}
+
+\fi
+
+%\bibliographystyle{unsrt}
+%\bibliography{scint_bib_sup}
+
+
+\end{document}

@@ -1,0 +1,108 @@
+\section{Results}
+\iffalse
+We test a kaleidoscopic scintillator with a square pyramid geometry (four side-surfaces).
+An image is assumed to contain the event and at most one mirror reflection per 
+side-surface of the kaleidoscope.
+Each event and mirror reflection appears as a defocused point source of light in 
+the image.
+Light from mirror reflections may be truncated along lines on the sensor 
+corresponding to mirrors' edges or completely removed, as described by the theory 
+introduced in the ``Methods" section.
+Our algorithm determines which mirror reflections are present in an image and 
+estimates the event's location by running the EM algorithm on a Gaussian mixture 
+model (GMM) parameterized in terms of the event's location.
+\fi
+
+Results are summarized below. See the ``Methods" section for more information on 
+the theory of kaleidoscopic light collection, simulated image generation, 
+algorithm, and experiments.
+
+A simulated image overlaid with each mirror reflection's acceptance zone of where 
+photons can arrive is shown in \cref{fig:trunc_examples}. 
+This figure is used to validate the theory on kaleidoscopic light collection and 
+image truncations. 
+
+Selected experimental images overlaid with the algorithm's estimated Gaussian 
+components are shown in \cref{fig:example_figures} to validate the kaleidoscopic 
+model and the presence of mirror reflections.
+
+The distances between mean and individual estimated event locations in groups of 
+experimental images of removed mirror reflections are reported in \cref{fig:crossval_error}.
+Statistics on the distances in the single- and double-removed mirror reflection 
+group over different ranges of photon counts are reported in \cref{tab:crossval_thresh_error}.
+Distances between estimated event locations using the regular and fixed 
+initialization methods, as well as the number of EM steps taken, are shown in \cref{fig:convergence}.
+These results are for validating that the algorithm is estimating the event's 
+location and converging in optimization.
+
+
+\ifthenelse{\boolean{figs_in_text}}{
+
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth]{trunc_examples.pdf}
+\caption{\textbf{Simulated kaleidoscopic image with theoretical acceptance zones.} 
+Acceptance zones are derived for each mirror reflection and overlaid on the image 
+for the (a) +$x$, (b) +$y$, (c) -$x$, and (d) -$y$ mirror reflections.} 
+\label{fig:trunc_examples}
+\end{figure}
+
+
+
+\begin{figure*}
+\centering
+\includegraphics[width=\linewidth]{example_figures.pdf}
+\caption{\textbf{Selected experimental images.} Experimental images overlaid with the algorithm's estimated Gaussians.
+Each dashed red circle is centered on the Gaussian component's mean. 
+The inner and outer circles are one and two standard deviations in radius, respectively.
+Pixels with a photon are enlarged with a $3 \times 3$ filter for visualization purposes.
+} 
+\label{fig:example_figures}
+\end{figure*}
+
+
+
+\begin{figure*}
+\centering
+\includegraphics[width=\linewidth]{crossval_error.pdf}
+\caption{\textbf{Agreement in event location measurements.} Histogram of distances between mean estimated event location and each image's estimated event location after mirror reflection removals. 
+(a) Distances including both single and double mirror reflection removals. Mean $\pm$ stdev: 0.24 $\pm$ 0.34 mm, 24,761 distances.
+(b) Distances including single mirror reflection removal. Mean $\pm$ stdev: 0.16 $\pm$ 0.28 mm, 11,255 distances.
+(c) Distances including double mirror reflection removal. Mean $\pm$ stdev: 0.27 $\pm$ 0.35 mm, 15,757 distances.
+} 
+\label{fig:crossval_error}
+\end{figure*}
+
+\begin{figure*}
+\centering
+\includegraphics[width=\linewidth]{fixed_init_results.pdf}
+\caption{\textbf{Optimization convergence.}
+(a) Distances in estimated event locations between the regular and fixed initialization methods. Mean $\pm$ stdev: $0.38 \pm 0.80$ mm, 4,351 events.
+(b) Nummber of steps taken in the EM algorithm from the regular initialization point. Mean $\pm$ stdev: $9.3 \pm 14.2$ steps, 4,351 events.
+(c) Nummber of steps taken in the EM algorithm from the fixed initialization point. Mean $\pm$ stdev: $13.5 \pm 14.9$ steps, 4,351 events.
+} 
+\label{fig:convergence}
+\end{figure*}
+
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|c|ccccc|}
+\hline
+Counts in a test image & 60 - 79 & 80 - 99 & 100 - 119 & 120 - 139 & 140 - 159 \\
+\hline
+Mean (mm)                & 0.28 & 0.26 & 0.19 & 0.19 & 0.15 \\
+Standard dev.  (mm)      & 0.36 & 0.35 & 0.30 & 0.29 & 0.21  \\
+Number of distances    & 9,317  & 7,524  & 4,774  & 2,354  & 792 \\
+\hline
+\end{tabular}
+\caption{\textbf{Agreement in event location measurements.} Mean and standard deviation of distances between mean estimated 
+event location and each image's estimated event location after both single and 
+double mirror reflection removals reported over different ranges of counts in a 
+test image.}
+\label{tab:crossval_thresh_error}
+\end{table}
+
+}{}
+
+

@@ -1,0 +1,33 @@
+\section{Related work}
+\textbf{Kaleidoscopic methods:}
+Mirrors and kaleidoscopic designs have been used for stereo vision \cite{nene1998stereo, gluckman1999planar, gluckman2002rectified} 
+and multi-view 3D reconstructions \cite{reshetouski2011three, ahn2021kaleidoscopic, ahn2023neural, takahashi2021structure, bangay2004kaleidoscope, mitsumoto19923}
+of an extended object using one picture from a single camera.
+A ``light-trap" design consists of mirrors oriented such that light entering the trap reaches nearly every position inside the trap \cite{xu2018trapping}.
+Time-of-flight is used to reconstruct a 3D object inside the trap.
+In fact, the pyramid-shaped light-trap was found to provide the best object coverage, which is the same shape as the kaleidoscope we use in this work.
+Here, we apply the kaleidoscope in the photon-starved setting of scintillation 
+event imaging and form a radiation detection problem as a computer vision problem.
+
+\noindent
+\textbf{Scintillation light collection:}
+Many scintillator and sensor configurations exist to optimize for certain 
+measurement characteristics.
+The scintillator volume can be segmented with inserted waveguides to constrain the emission of light onto a sensor coupled at the scintillator's surface \cite{kato2013novel, kishimoto2013development}.
+Sensors can be placed on one or more surfaces of the scintillator \cite{yamaya2011sipm, kishimoto2013development}.
+Reflective surfaces can be coupled to the scintillator to reflect light to the sensor \cite{gonzalez2017performance, folsom2021characterization, janecek2010simulating}.
+In this work, we propose a new scintillator geometry with specular surfaces to 
+increase light collection for a camera sensor.
+
+
+\noindent
+\textbf{Scintillator applications:}
+A ``Compton camera" device \cite{kataoka2013handy, hosokoshi2019development, llosa2019sipm, parajuli2022development, kim2024comprehensive} 
+measures scattering and absorption events of individual gamma-rays in a scintillator 
+to perform Compton backprojection \cite{haefner2015filtered, xu2006filtered, wilderman1998list} for gamma-ray imaging.
+The Compton camera and related detectors are used in applications for 
+national security and nuclear safety \cite{vetter2018gamma}, as well as astronomy \cite{schonfelder1984imaging}.
+Scintillators are also used in positron emission tomography (PET) to detect the 
+coincidence of annihilation photons (511 keV gamma-rays) for reconstructing the 
+medical image \cite{gonzalez2021evolution}.
+

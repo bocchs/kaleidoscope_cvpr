@@ -1,0 +1,156 @@
+\section{Introduction}
+
+High energy particles are created in nuclear processes including man-made 
+devices, cosmic radiation, and natural interactions. 
+There is a wide variety of particles with varying properties. 
+Detecting and characterizing them is crucial for a broad range of applications 
+including nuclear security \cite{vetter2018gamma}, nuclear reactor and stockpile imaging \cite{beaumont2015high}, 
+medical imaging \cite{gonzalez2021evolution}, 
+archeology \cite{menichelli2007scintillating,ryzewski2013neutron}, 
+and astronomy \cite{schonfelder1984imaging}. 
+A particularly useful property of these particles is that many of them can 
+penetrate through dense materials and therefore allow us to image through 
+barriers and inside solid structures. 
+The same penetrating properties, however, make it challenging to build a camera 
+that can perform imaging or vision using high energy particles. 
+A detector needs to have a large volume and density for a particle to interact. 
+At the same time, we would like to know the location and shape of the interaction if it happens. 
+One common approach to achieve this is by using a scintillator.
+
+A scintillator is a radiation detector that converts ionizing radiation into 
+visible light.
+It provides mass for an incident particle to be absorbed and detected with a photosensor.
+While a particle is propagating through a scintillator, it may deposit energy and 
+cause a ``scintillation event". 
+In the case of gamma-ray radiation, a gamma-ray collides with an electron in the 
+scintillator and causes the electron to recoil over a random walk.
+Scintillation photons are emitted isotropically from the electron's path over a 
+decay time.
+The photons propagate out of the scintillator and are captured by a sensor.
+Measuring the event, such as its position, time, and energy deposition, is 
+performed with the obtained signal.
+These measurements are then used in various downstream tasks to characterize 
+the radiation source.
+
+Scintillation light collection methods consider both scintillator hardware design  
+and sensor characteristics to optimize event measurements for a given task.
+In this work, we focus on the design of measuring events in a monolithic 
+scintillator with a camera.
+A drawback of this design is its low light collection compared to that from 
+coupling a sensor directly to the scintillator's surface.
+The reasons are that the event must be far enough from the lens to be imaged, and 
+the lens adds a restrictive aperture and reduced range of acceptance angles for 
+incident light.
+This drawback has a smaller impact in tasks where measurements of individual 
+particles or gamma-rays are not needed.
+For example, in certain radiography tasks, the overall glow from ionizing 
+radiation being absorbed in a scintillator after being attenuated in an object is 
+used to form an image of the object.
+In this case, increasing total exposure time can increase the signal to 
+noise ratio (SNR), and low-speed cameras (CMOS, CCD, etc.) are adequate \cite{pleinert1997design,baker2014scintillator,adams2017gamma,balasubramanian2022x,gustschin2024event}.
+On the other hand, measuring individual events requires high-speed, single-photon 
+sensors due high particle incidence rates and the finite number of photons emitted 
+by an event.
+In this case, increasing exposure time does not increase light collection per 
+event and decreases SNR.
+Therefore, maximizing light throughput is crucial for this kind of task.
+The ``Compton camera" \cite{kataoka2013handy, hosokoshi2019development, llosa2019sipm, parajuli2022development, kim2024comprehensive} 
+and neutron scatter camera \cite{mascarenhas2006development,marleau2007advances,mascarenhas2009results,weinfurther2018model} 
+are examples of devices that measure events from individual gamma-rays or neutrons.
+These devices measure double-interaction events and use the kinematics of 
+gamma-ray or neutron scattering to perform backprojection for localizing the 
+radiation source. % \cite{haefner2015filtered, xu2006filtered, wilderman1998list}.
+Recently, single-photon-avalanche-diode (SPAD) cameras have been of interest for 
+measuring events for their high spatial and temporal resolution at the sensor \cite{bocchieri2024scintillation}.
+SPAD cameras could potentially make high-resolution measurements of individual 
+events in a thick scintillator volume and perform advanced radiation imaging 
+techniques, but they are limited by low levels of light collection.
+
+Reflective surfaces and scintillator geometry have been considered for increasing 
+light collection in various designs.
+%Retroreflectors have been shown to improve light collection in parallelpiped and 
+%pyramidal frustum scintillators and a position-sensitive photomultiplier (PSPMT) 
+%sensor \cite{ros2014retroreflector}. 
+Retroreflectors have been shown to improve light collection along with spatial 
+and energy resolution in monolithic scintillators.  \cite{mcelroy2002use,heemskerk2009micro,ros2014retroreflector,gonzalez2017performance}.
+Specular and diffuse reflectors have been tested in the context of improving 
+reflection models for simulation purposes \cite{janecek2010simulating,roncali2017integrated,trigila2021optimization}.
+These studies use designs where a sensor is coupled to the scintillator's surface.
+To the best of our knowledge, reflective surfaces have not been reported for 
+collecting additional light in camera designs.
+Adding diffuse surfaces will reflect light into the camera but obfuscate the 
+event's image and cause a loss in spatial information.
+Retroreflector surfaces better preserve spatial information but can no more than 
+double the amount of captured light.
+Retroreflectors also add blur that may degrade spatial resolution.
+Current camera designs only capture light emitted directly to the camera,
+which is a small fraction of all the light emitted from an event 
+\cite{bocchieri2024scintillation, yamamoto2023development, d2021novel, gao2023novel, losko2021new,adams2017gamma,balasubramanian2022x,gustschin2024event}.
+The goal of this work is to increase light collection by capturing additional 
+light from an event that is emitted away from the camera.
+The challenge lies in doing so without losing the event's spatial information.
+%Another option for increasing light collection would be to surround the 
+%scintillator with multiple cameras.
+%However, the extra camera hardware increases overall cost and complexity and may 
+%cause incident particles to scatter before reaching the scintillator.
+
+We propose to use a kaleidoscopic scintillator geometry with specular surfaces to 
+redirect light into the camera.
+A kaleidoscope consists of planar mirrors oriented like a pyramid frustum.
+%that produce multiple images of an object from different viewpoints.
+Light from inside the kaleidoscope reflects one or more times before 
+propagating out of the pyramid's open base and into a camera.
+The resulting image contains direct light from the event and indirect light from 
+the event's mirror reflections. 
+Mirror reflections appear as events in locations determined by the kaleidoscope's geometry.
+Mirrors redirect light and preserve its structure, thus preserving the event's 
+spatial information.
+The kaleidoscope can increase light collection by multiple factors.
+In this work, we demonstrate an improvement in light collection by up to about 
+five times that compared to imaging direct light only.
+The task is to determine the event's 3D position from the resulting image.
+
+%With sufficient light, complex signatures such as multi-interaction events, 
+%particle tracks, and Cherenkov photons could be measured.
+
+
+Mirrors and kaleidoscopic designs have been used for stereo vision \cite{nene1998stereo, gluckman1999planar, gluckman2002rectified} 
+and multi-view 3D reconstructions \cite{reshetouski2011three, ahn2021kaleidoscopic, ahn2023neural, takahashi2021structure, bangay2004kaleidoscope, mitsumoto19923}
+of an extended object using one picture from a single camera.
+A ``light-trap" design consists of mirrors oriented such that light entering the 
+trap reaches nearly every position inside the trap \cite{xu2018trapping}.
+Time-of-flight is used to reconstruct a 3D object inside the trap.
+In fact, the pyramid-shaped light-trap was found to provide the best object 
+coverage, which is the same shape as the kaleidoscope we use in this work.
+Here, we apply the kaleidoscope in the photon-starved setting of scintillation 
+event imaging and form a radiation detection problem as a computer vision problem.
+
+
+In this paper, we establish theory for what light arrives at the camera 
+sensor from an event in a kaleidoscopic scintillator.
+We introduce a probabilistic model that jointly parameterizes the event and mirror 
+reflections in an image in terms of the event's location.
+We develop an algorithm to estimate the event's location and validate it on 
+experimental data captured with a SPAD camera and a gamma-ray source.
+An overview of the method is illustrated in \cref{fig:teaser}.
+
+
+\ifthenelse{\boolean{figs_in_text}}{
+
+\begin{figure*}
+\centering
+\includegraphics[width=\linewidth]{teaser_pipeline.jpg}
+\caption{\textbf{Overview of image capture and event localization method.}
+An image is composed of light that is emitted from the scintillation event and 
+reaches the camera either directly or after reflecting off mirrors of a 
+kaleidoscopic scintillator.
+The locations of an event's mirror reflections are known for a given event 
+location and kaleidoscope geometry.
+This relationship between the event and mirror reflections is embedded in a 
+Gaussian mixture model whose likelihood is maximized to estimate the event's location.
+} 
+\label{fig:teaser}
+\end{figure*}
+
+}{}
+

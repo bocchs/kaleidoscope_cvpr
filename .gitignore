@@ -1,0 +1,10 @@
+*.fdb_latexmk
+*.pdf
+*.aux
+*.bbl
+*.blg
+*.fls
+*.log
+*.out
+figures/
+.DS_Store

@@ -1,0 +1,521 @@
+\section{Methods} \label{sec:methods}
+
+\subsection{Kaleidoscopic event imaging theory} \label{sec:theory}
+
+Without loss of generality, consider a square pyramid kaleidoscope where each 
+face is a specular surface, 
+and the index of refraction inside the kaleidoscope is $n=1$.
+The base of the pyramid is open, through which light exits the kaleidoscope.
+Corrections for modeling a kaleidoscopic scintillator with $n>1$ include 
+a decreased pyramid height and increased opening angle at the apex, based on $n$.
+The true depth of a measured event would then be corrected for using $n$.
+The image of a scintillation event consists of light emitted directly from the 
+event and from the event's mirror reflections.
+Below, we describe the spatial relationship between an event and its mirror 
+reflections, as well as their image on the sensor using a thin lens model.
+
+
+\subsubsection{Imaging configuration}
+
+The world coordinate system's origin is set at the pyramid's apex with the 
+$z$-axis directed perpendicular toward the pyramid's base surface.
+The camera coordinate system's origin is at the center of the lens with its 
+$z$-axis directed toward the pyramid in the opposite direction of the world's $z$-axis.
+The $x$ and $y$ axes among the two coordinate systems are in the same directions, 
+so transforming a point between the world and camera coordinate systems is 
+carried out by adding or subtracting the $z$-coordinate with the distance between 
+the lens and the scintillator's apex.
+We denote a $z$-coordinate in the world coordinate system as $z_w$ and camera 
+coordinate system as $z_c$.
+We use a thin lens to model the camera.
+Three important planes to note are the focal plane, the thin lens plane, and the 
+sensor plane.
+The focal plane is set at the pyramid's apex at $z_w=0$ mm.
+A thin lens with diameter $A$ is placed at a distance $S_1$ from the focal plane. 
+The sensor is placed at a distance $S_2$ from the lens.
+The lens' focal length is set to $f=(S_1^{-1}+S_2^{-1})^{-1}$.
+These parameters are illustrated in \cref{fig:optical_config}.
+
+\ifthenelse{\boolean{figs_in_text}}{
+
+\begin{figure}
+\centering
+\includegraphics[width=.33\linewidth]{optical_config.pdf}
+\caption{\textbf{Imaging parameters and coordinate systems.} 
+The optical configuration consists of a lens with diameter $A$, distance from 
+lens to focal plane $S_1$, and distance from lens to sensor $S_2$. The diameter 
+of an event's image on the sensor is $c$. The camera is focused at the 
+scintillator's apex where the world coordinate system origin is located. The 
+camera coordinate system origin is located at the lens. The figure only shows 
+light emitted directly to the camera.} 
+\label{fig:optical_config}
+\end{figure}
+
+}{}
+
+A scintillation event is approximated as a point source of light.
+Since the optical setup is constrained to short imaging distances, 
+the images of an event and its mirror reflections exhibit defocus blur and 
+have nonzero diameters.
+An image's diameter on the sensor varies according to the event's distance from 
+the focal plane, following the circle of confusion model.
+For an event at $(x_0,y_0,z_{c0})$, 
+the circle of confusion model yields
+\begin{equation} \label{eqn:circ_of_conf}
+c=A\frac{S_2}{S_1}\frac{|S_1-z_{c0}|}{z_{c0}}
+\end{equation}
+where $c$ is the image diameter at the sensor.
+
+Light is emitted in all directions from the event.
+Photons may arrive at the camera directly from the event or indirectly after 
+reflecting off mirrors.
+Direct photons form a complete image on the sensor, while indirect photons may 
+form an image that is truncated or completely missing as described below.
+
+
+\subsubsection{Mirror reflections and apertures}
+
+Consider an event at $\bm{p_0}=(x_0,y_0,z_{w0})$.
+Mirror $k$ with normal vector $\bm{n_k}$ produces a mirror reflection located at 
+\begin{equation}
+\bm{p_k}=T_k\bm{p_0}
+\end{equation}
+where
+\begin{equation} \label{eqn:ref_trans}
+T_k=I_{3\times3} - 2\bm{n_k}\bm{n_k}^T
+\end{equation}
+is the mirror's transformation.
+The mirror reflection of an event is also a point source of light.
+The captured image of the mirror reflection is obtained from the photons that 
+reflect off the mirror and into the camera, exhibiting the same defocus blur as if 
+an event were located at $\bm{p_k}$.
+However, due to the finite mirror size, the image on the sensor may be truncated 
+along lines corresponding to the mirror's edges.
+This occurs when $\bm{p_k}$ is behind another mirror from the camera's perspective.
+The photons that are truncated from the image are those that reflect off the 
+mirror adjacent to mirror $k$ near the shared edge.
+Also, light in higher-order reflections over multiple mirrors may be stopped 
+in previous reflections and also cause image truncations.
+Essentially, mirror $k$ behaves like an aperture to a light source at $\bm{p_k}$. 
+
+For a single reflection, light from $\bm{p_k}$ that does not pass through mirror 
+$k$ does not reach the camera and is truncated from the image.
+\cref{fig:trunc_theory}a and c show a 2D view of the propagation of light over a single reflection without truncations.
+\cref{fig:trunc_theory}b and d show how truncations form.
+A 3D visualization of light truncation is shown in \cref{fig:trunc_teaser}.
+
+
+\ifthenelse{\boolean{figs_in_text}}{
+
+\begin{figure*}
+\centering
+\includegraphics[width=\linewidth]{trunc_theory.pdf}
+\caption{\textbf{Mirror apertures and image truncations.} 
+An event emits light onto a mirror that reflects into the camera. 
+Some light might not reach the sensor due to finite mirrors and defocus blur.
+(a) The mirror reflection is located beyond the focal plane. 
+All light that forms the mirror reflection reaches the sensor.
+(b) The mirror reflection is located beyond the focal plane. 
+Some light from the mirror reflection is stopped at the mirror's edge and 
+truncated on the sensor.
+(c) The mirror reflection is located within the focal plane.
+All light that forms the mirror reflection reaches the sensor.
+(d) The mirror reflection is located within the focal plane. 
+Some light from the mirror reflection is stopped at the mirror's edge and 
+truncated on the sensor.
+(e) Light from a double mirror reflection is stopped at both mirrors' edges and truncated on the sensor. 
+The mirror for the second reflection is illustrated along the optical axis.} 
+\label{fig:trunc_theory}
+\end{figure*}
+
+
+\begin{figure}
+\centering
+\includegraphics[width=.4\linewidth]{trunc_teaser.jpg}
+\caption{\textbf{Image truncation example in 3D.}
+The image of an event and one mirror reflection is shown. 
+Light corresponding to the mirror reflection is truncated at the mirror's edge, 
+resulting in a truncation line in the image.
+The truncation line only applies to that mirror reflection.}
+\label{fig:trunc_teaser}
+\end{figure}
+
+}{}
+
+
+In higher-order reflections, light reflecting off mirror $k$ can 
+reflect off another mirror $l$ and generate mirror reflection 
+at $\bm{p_l}=T_l \bm{p_k}$.
+The light incident on mirror $l$ from $\bm{p_k}$ passes through the aperture 
+of mirror $k$.
+If this light spans a partial area $A_l$ of mirror $l$, then mirror $l$'s aperture is $A_l$.
+Otherwise, mirror $l$'s aperture is simply the mirror.
+Mirror $l$'s aperture affects the light emitted from $\bm{p_l}$ toward another 
+mirror for a higher-order reflection and toward the camera for imaging.
+Higher-order reflections and imaging continue in the same manner.
+A 2D view of truncations from multiple reflections is shown in \cref{fig:trunc_theory}e.
+
+
+\subsubsection{Image truncations} \label{sec:image_truncations}
+
+Consider an event's mirror reflection located at $\bm{p_k}$ generated from mirror $k$.
+Each edge of the mirror may impose a truncation line on the camera sensor.
+A truncation line on the sensor, $l_\text{sensor}$, is determined as follows.
+Denote a truncation plane, $P_{\text{trunc}}$, that contains $\bm{p_k}$ and the 
+mirror's edge.
+$P_{\text{trunc}}$ blocks light emitted toward the side facing away from the mirror.
+Denote this side using the normal vector $\bm{n_{\text{trunc}}}$.
+Compute the intersection between $P_{\text{trunc}}$ and the focal plane to be the
+truncation line at the focal plane, $l_\text{focal}$.
+Project $\bm{n_{\text{trunc}}}$ onto the focal plane, denoted as 
+$\bm{n_{\text{focal}}}$.
+Scale $l_\text{focal}$ by the magnification, $m=-\frac{S2}{S1}$, to obtain $l_\text{sensor}$.
+Scale $\bm{n_{\text{focal}}}$ by $m$ to obtain $\bm{n_{\text{sensor}}}$.
+
+The truncation side of $l_\text{sensor}$ where photons do not arrive depends on 
+which side of the focal plane that $\bm{p_k}$ is located.
+If $\bm{p_k}$ is beyond the focal plane away from the lens at a distance $d>S_1$ 
+from the lens, 
+then the side of $l_\text{sensor}$ pointed to by $\bm{n_{\text{sensor}}}$ is 
+truncated and contains no photon arrivals (\cref{fig:trunc_theory}b).
+If $\bm{p_k}$ is between the focal plane and lens at a distance $d<S_1$ from the lens, 
+then the side of $l_\text{sensor}$ opposite of $\bm{n_{\text{sensor}}}$ 
+is truncated and contains no photon arrivals (\cref{fig:trunc_theory}d).
+
+The area on the sensor where photons cannot arrive is the union of the
+truncation sides of each truncation line.
+We denote this area as the ``truncation zone" and its complement as the 
+``acceptance zone" (\cref{fig:trunc_theory}b,d,e).
+The event itself has no truncation zone on the sensor because its image is formed 
+by light emitted directly to the camera without reflections.
+
+
+\subsection{Event localization algorithm}
+
+We adopt a 2D Gaussian 
+\begin{equation}
+\mathcal{N}(\bm{t};\bm{\mu},\sigma^2)=\frac{1}{2\pi\sigma^2}\exp\left({-\frac{(\bm{t}-\bm{\mu})^T(\bm{t}-\bm{\mu})}{2\sigma^2}}\right) 
+\end{equation}
+as the camera's point spread function and assume a circular Gaussian with 
+covariance matrix $\Sigma=\sigma^2 I_{2\times2}$. 
+$\sigma=ac$, where $a$ is a proportionality constant determined by the 
+optical configuration, and $c$ is the circle of confusion diameter in \cref{eqn:circ_of_conf}.
+$\bm{t}$ is a 2D coordinate on the sensor plane.
+
+An event or mirror reflection located at $\bm{p_k}=(x_k,y_k,z_{ck})$ is modeled as 
+a point source of light, so its image on the sensor consists of photon arrivals 
+spatially distributed over a 2D Gaussian with mean 
+\begin{equation} \label{eqn:mu}
+\bm{\mu_k}=\left[ -\frac{S_2}{z_{ck}}x_k, -\frac{S_2}{z_{ck}}y_k \right]
+\end{equation}
+and standard deviation 
+\begin{equation} \label{eqn:stdev}
+\sigma=aA\frac{S_2}{S_1}\frac{|S_1-z_{ck}|}{z_{ck}}
+\end{equation}
+where \cref{eqn:mu} is derived from perspective projection.
+Each photon arrival is one sample from this Gaussian.
+%\textcolor{red}{
+%In this paper, we flip the pixels of a frame so that photons arrive on the same 
+%side of the sensor as the event (e.g. an event in the positive $x$-$y$ quadrant 
+%produces an image on the sensor in the positive $x$-$y$ quadrant).
+%This is the same as removing the negative signs in \cref{eqn:mu}.}
+
+We model an image of an event in a kaleidoscopic scintillator as a GMM, where each 
+component in the GMM corresponds to the event or a mirror reflection.
+The complete-data likelihood function, $L$, for an image with $N$ photons, 
+one event, and $K$ mirror reflections is
+\begin{linenomath}
+\begin{equation}
+L(\bm{\theta};\bm{t},\bm{z})=\prod_{i=1}^N \prod_{k=0}^K \left[ \pi_k \mathcal{N}(\bm{t_i};\bm{\mu_k},\sigma_k^2) \right]^{\mathbbm{1}{(z_i=k)}}
+\end{equation}
+\end{linenomath}
+where $\bm{\theta}=(\bm{\mu},\bm{\sigma},\bm{\pi})$ are model parameters, 
+and $\pi_k=P(z_i=k)$ is the prior distribution that a photon comes from 
+component $k$.
+$\bm{t}=(\bm{t_1}, \bm{t_2}, ..., \bm{t_N})$ are the 2D coordinates of each of 
+$N$ photon arrivals on the sensor and $\bm{z}=(z_1, z_2, ..., z_N)$ are the latent 
+variables of which component in the GMM that a photon belongs to.
+We apply a density-based weighting scheme to photon samples to minimize the 
+influence of sparsely distributed dark counts.
+The weighted complete-data likelihood function, $L_w$, is
+\begin{linenomath}
+\begin{align}
+L_w(\bm{\theta};\bm{t},\bm{z}) &= \prod_{i=1}^N \prod_{k=0}^K \left[ \pi_k \mathcal{N}(\bm{t_i};\bm{\mu_k},\frac{1}{w_i}\sigma_k^2) \right]^{\mathbbm{1}{(z_i=k)}} \\
+&= \prod_{i=1}^N \prod_{k=0}^K \left[ \pi_k \frac{w_i}{2\pi{\sigma_k}^2} \text{exp}\left( -\frac{w_i}{2{\sigma_k}^2} (\bm{t_i}-\bm{\mu_k})^T(\bm{t_i}-\bm{\mu_k}) \right) \right]^{\mathbbm{1}{(z_i=k)}}
+\end{align}
+\end{linenomath}
+where
+\begin{linenomath}
+\begin{align} \label{eqn:weights}
+w_i = \sum_{j \in S_i^q} \text{exp} \left( -\frac{||\bm{t_i}-\bm{t_j}||_2^2}{\nu} \right)
+\end{align}
+\end{linenomath}
+is the weight assigned to photon sample $i$, $S_i^q$ is the set of $q$ 
+nearest neighbors of photon $i$, and $\nu$ is a positive scalar.
+The expected value of the weighted complete-data log-likelihood, $Q$, is
+\begin{linenomath}
+\begin{equation} \label{eqn:Q_eqn}
+\begin{aligned}
+Q & = E_{\bm{z}|\bm{t}}\left[\log L_w(\bm{\theta};\bm{t},\bm{z})\right] \\ & = \sum_i \sum_k r_{ik} \left[ \text{log}(\pi_k) + \text{log}(w_i) - \text{log}(2\pi{\sigma_k}^2) - \frac{w_i{\sigma_k}^{-2}}{2}(\bm{t_i}-\bm{\mu_k})^T(\bm{t_i}-\bm{\mu_k}) \right]
+\end{aligned}
+\end{equation}
+\end{linenomath}
+where 
+\begin{linenomath}
+\begin{equation} \label{eqn:r_ik}
+\begin{aligned}
+r_{ik} & = E_{\bm{z}|\bm{t}}[\mathbbm{1}{(z_i=k)}] \\ & = \frac{\pi_k \mathcal{N}(\bm{t_i};\bm{\mu_k},{\sigma_k^2})}{\sum_{k'=0}^K \pi_{k'} \mathcal{N}(\bm{t_i};\bm{\mu_{k'}},{\sigma_{k'}^2})}
+\end{aligned}
+\end{equation}
+\end{linenomath}
+gives the posterior distribution of $\bm{z}$.
+$r_{ik}$ is the probability that photon $i$ comes from event $k$, given 
+the current parameter values.
+
+Truncations can be incorporated in setting the value of $r_{ik}$. 
+If photon $i$ at location $\bm{t_i}$ on the sensor lies in the truncation zone 
+belonging to mirror reflection $k$, then the probability that photon 
+$i$ belongs to mirror reflection $k$ is 0. 
+In this case, $r_{ik}=0$, and the corresponding term in the 
+summation in the denominator of \cref{eqn:r_ik} is 0 when solving for a different $r_{ik}$.
+
+The location of each mirror reflection at $\bm{p_k}$ for $k=1...K$ generated from 
+an event at $\bm{p_0}$ is known based on the kaleidoscope's geometry.
+For any mirror reflection $k$, each coordinate in $(x_k,y_k,z_{ck})$ is a linear 
+combination of the event's $(x_0,y_0,z_{c0})$ coordinates based on the mirror's 
+reflection transformation.
+All $\bm{p_k}$'s can be written in terms of $(x_0,y_0,z_{c0})$ using 
+\cref{eqn:ref_trans}, and all $\bm{\mu_k}$'s and $\sigma_k$'s can be written in 
+terms of $(x_0,y_0,z_{c0})$ using \cref{eqn:mu,eqn:stdev}.
+We can reduce the number of free parameters from $O(K)$ 
+to $O(1)$ by rewriting each $\bm{\mu_k}$ and $\sigma_k$ in terms of 
+$(x_0,y_0,z_{c0})$.
+Thus, we obtain a GMM where each component is constrained to $\bm{p_0}$, and 
+$\bm{\theta}=(x_0,y_0,z_{c0},\bm{\pi})$.
+This results in an optimization problem for estimating $\bm{p_0}$ that captures 
+the global information of the event and all mirror reflections:
+\begin{linenomath}
+\begin{equation} \label{eqn:opti_prob}
+\argmax_{x_0,y_0,z_{c0},\bm{\pi}} Q
+\end{equation}
+\end{linenomath}
+We optimize this using the EM algorithm.
+$Q$ parameterized in terms of $\bm{p_0}$ is derived in Supplementary \cref*{sec:like,sec:weighted_like}.
+
+One or more images of mirror reflections may be missing due to truncations, 
+depending on the event's location.
+Therefore, determining which mirror reflections are present is required to compute $Q$.
+We run the following initialization procedure to determine the presence of mirror 
+reflections and to initialize the event's estimated location for the EM algorithm.
+
+We assume a square pyramid kaleidoscope geometry, up to single-order reflections, 
+and the presence of at least two mirror reflections in an image.
+Each side of the scintillator's square surface is parallel to each respective side 
+of the sensor.
+Mirror reflections will appear along either the $x$ or $y$ axes from the event.
+In the initialization procedure, centroids $\bm{\mu_k}^0$ are obtained using 
+weighted KMeans.
+We obtain combinations of subsets of centroids, compute the standard deviation of 
+a subset's coordinates along the $x$ and $y$ axes to determine which centroids are 
+horizontally or vertically distributed, and classify centroids based on their 
+relative positioning. 
+Centroids are classified as either the event, or $+x$, $-x$, $+y$, or $-y$ mirror reflections. 
+A set of possible event locations that spans the depth of the scintillator is 
+computed using the event's centroid and \cref{eqn:mu}.
+The number of mirror reflections, which reflections are present, and the 
+initialization point for $\bm{p_0}$ are those that correspond to the 
+highest value of $Q$ out of this set over 3, 4, and 5 clusters in KMeans.
+The number of clusters corresponds to the number of mirror reflections plus the event.
+This initialization procedure is described in \cref{alg:init}.
+$\bm{\pi}$ is initialized to the uniform distribution.
+
+
+\begin{algorithm}
+\caption{\textbf{Initialization procedure.}} \label{alg:init}
+\DontPrintSemicolon
+\SetKwInOut{Parameter}{Arguments}
+\SetKwFunction{KMeans}{KMeans}
+\SetKwFunction{ClassifyCentroids}{ClassifyCentroids}
+\SetKwFunction{PossibleEventLocations}{PossibleEventLocations}
+\SetKwFunction{Q}{Q}
+\SetKwComment{Comment}{// }{}
+%\begin{algorithmic}
+\Parameter{photon locations $\bm{t}$, photon weights $\bm{w}$, lens to sensor distance $S_2$}
+\KwOut{event initialization location $\bm{p_{init}}$, number of mirror reflections $K_{out}$, mirror reflection classification $M_{out}$}
+$Q_{max} = -\infty$\;
+\For{K=3:5}{
+  $\bm{\mu_k}^0 \leftarrow \KMeans(\bm{t}, \bm{w}, K)$\;
+  $M \leftarrow \ClassifyCentroids(\bm{\mu_k}^0)$\;
+  $S \leftarrow \PossibleEventLocations(\bm{\mu_{event}}^0, S_2)$ \Comment{\cref{eqn:mu}}
+  \For{$\bm{\tilde{p_0}} \in S$}{
+    $Q_{\bm{\tilde{p_0}}} \leftarrow \Q(\bm{\tilde{p_0}})$\;
+    \If{$Q_{\bm{\tilde{p_0}}} > Q_{max}$}{
+      $Q_{max} \leftarrow Q_{\bm{\tilde{p_0}}}$\;
+      $\bm{p_{init}} \leftarrow \bm{\tilde{p_0}}$\;
+      $M_{out} \leftarrow M$\;
+      $K_{out} \leftarrow K-1$\;
+    }
+  }
+}
+\end{algorithm}
+
+During the E-step, $r_{ik}$ is updated using \cref{eqn:r_ik} and the current 
+values of $\bm{p_0}$ and $\bm{\pi}$.
+During the M-step, $\bm{p_0}$ is updated by optimizing 
+$Q$ with gradient ascent, 
+and $\bm{\pi}$ is updated using $\pi_k=\frac{1}{N}\sum_{i=1}^N r_{ik}$.
+Gradients are derived in Supplementary \cref*{sec:like,sec:weighted_like}.
+In both the E and M steps, terms that correspond to a mirror reflection $k$ are 
+included in the computation only if that mirror reflection is present in the image.
+If truncation boundaries are known, then partial image truncations 
+can be incorporated into the algorithm by zeroing $r_{ik}$ for photon
+$i$ that lies in mirror $k$'s truncation zone.
+We do not have accurate knowledge of truncation boundaries in experimental data,
+so we only determine the presence of mirror reflections rather than partial 
+truncations in the experiments.
+The kaleidoscopic image model and event localization algorithm are validated on 
+experimental data.
+
+
+\subsection{Experimental data collection}
+The experimental hardware consists of a SPAD array, lens, scintillator, and 1 $\mu$Ci Co-60 gamma-ray source.
+We use the SPAD512 array (Pi Imaging) with microlenses for increased fill factor, 
+which has $512 \times 512$ pixels and 16 $\mu$m pixel pitch.
+The SPAD array is configured to capture 1-bit images with 1.5 $\mu$s 
+integration time.
+The lens is a 50 mm focal length Nikkor lens set to a f/1.2 aperture.
+The scintillator is a GAGG(Ce)-HL crystal (Epic Crystal), which has a 150 ns decay 
+constant, a 530 nm emission peak, and an index of refraction of 1.91.
+Its geometry is a square pyramid with a 20 mm wide base and 5.77 mm 
+height and a 120 degree opening angle at the apex.
+Four surfaces of the scintillator are coated with enhanced specular reflector.
+We account for the scintillator's index of refraction by assuming the 
+scintillator's height is $5.77$ mm  / 1.91 $=3.02$ mm and compute apparent event 
+locations in the smaller volume.
+The camera's lateral field of view (FOV) covers approximately $5 \times 5$ mm at 
+the focal plane.
+The scintillator is positioned such that its apex is in-focus and centered in the 
+FOV, and that its corners are aligned with the corners of the FOV. 
+There is an air gap of approximately 30 mm between the scintillator and the lens.
+The entire setup is placed inside a light-tight box to keep ambient light out.
+The scintillator is shown in Supplementary Fig. \ref*{fig:scintillator}.
+The experimental camera focus on the scintillator is shown in Supplementary Fig. \ref*{fig:experiment_focus}. 
+
+Data collection took place at about 21 degrees Celsius ambient temperature.
+We first captured 130,000 images without the gamma-ray source to characterize the 
+dark count rate and zero out 5\% of pixels with the highest dark count rates.
+After zeroing 5\% of pixels, we observe a median of 4 dark counts per image.
+A histogram of dark counts per image is shown in Supplementary Fig. \ref*{fig:dark_counts_hist}.
+
+We collect data by placing the gamma-ray source adjacent to the scintillator's 
+apex and passively capturing images.
+All computations are performed in post-processing.
+Zeroing 5\% of pixels is applied to all images.
+We capture 13,000,000 images with the gamma-ray source present and 
+discard images with less than 60 counts.
+Histograms of counts in an image are shown in Supplementary \cref*{fig:cap_counts_hist}.
+
+
+\subsection{Algorithm parameter values and stopping criteria}
+We use $q=10$ nearest neighbors and $\nu=10$ pixels for assigning photon weights 
+using \cref{eqn:weights}.
+Up to ten possible event locations are evaluated in the initialization procedure 
+equispaced over the scintillator's depth.
+During one M-step, we run gradient ascent for 1,000 steps with a step size of 1e-7.
+We run the EM algorithm until the distance in the estimated event location between 
+consecutive steps is less than 0.01 mm, or until 100 steps are taken.
+
+
+\subsection{Experimental camera parameter calibration}
+Experimental camera parameter values for $S_1$, $S_2$, and $a$ are calibrated by 
+optimizing $Q$ in a grid search on a chosen experimental image.
+We choose the image shown in \cref{fig:calibration}, where the event is 
+approximately centered with evident mirror reflections, and we manually remove 
+dark counts.
+The grid search is performed over event locations at $x$-$y$ coordinates 
+$(0,0)$ mm and $z$-coordinates that span the depth of the scintillator.
+This resulted in $S_1=37.24$ mm, $S_2=109.48$ mm, and $a=0.056$ at event location 
+(0, 0, 2.61) mm.
+
+\ifthenelse{\boolean{figs_in_text}}{
+
+\begin{figure*}
+\centering
+\includegraphics[width=\linewidth]{calibration.pdf}
+\caption{\textbf{Experimental calibration image.} a) The original image. b) The image after manually 
+removing dark counts overlaid with the Gaussian components found during the 
+calibration procedure.
+Each dashed red circle is centered on the Gaussian component's mean. 
+The inner and outer circles are one and two standard deviations in radius, respectively.
+Pixels with a photon are enlarged with a $3 \times 3$ filter for visualization purposes.
+} 
+\label{fig:calibration}
+\end{figure*}
+}{}
+
+\subsection{Light collection and truncation theory validation}
+We validate the theory on kaleidoscopic light collection and image truncations by 
+observing that the derived truncation lines align with photon arrivals in a 
+simulated image.
+We simulate the image of an event in a kaleidoscopic scintillator in the shape of 
+a square pyramid using a thin lens and ray tracing. 
+The kaleidoscope is 3.02 mm in height and has a 20 mm base length.
+We set its index of refraction to 1 and place its apex at $z_w=0$ mm.
+A thin lens with 30 mm focal length and 20 mm diameter is placed at $z_w=50$ mm.
+A $512 \times 512$ sensor with 16 $\mu$m pixel pitch is placed at $z_w=125$ mm.
+100,000 photons are emitted isotropically from $(0.25, 1, 2)$ mm (world 
+coordinates).
+We emit an unrealistically high number of photons so that image truncations are 
+clearly observable.
+Acceptance zones for each mirror reflection are derived and overlaid on the image.
+The resulting image is shown in \cref{fig:trunc_examples}.
+
+\subsection{Kaleidoscopic model validation}
+We select six experimental images and overlay the algorithm's estimated Gaussian 
+components (\cref{fig:example_figures}) to validate the presence of mirror 
+reflections in accordance with the kaleidoscopic model.
+Due to non-idealities, truncation zone boundaries in experimental images do not 
+exactly match those derived theoretically using a thin lens.
+We do not attempt to derive truncation lines in experimental images.
+Rather, truncations are evident from missing mirror reflections in the selected images.
+
+\subsection{Algorithm validation}
+Experimental events cannot be controlled, so their ground truth locations are unknown.
+Therefore, to validate the algorithm is locating the event, we report agreement of 
+multiple measurements of the event's location as follows.
+We use experimental images that contain the event and four mirror reflections as 
+test images.
+The number of mirror reflections in an image is determined using the algorithm.
+Then, we create new images of the event by removing combinations of one or two 
+mirror reflections from the image.
+Photon $i$ is classified as belonging to mirror reflection $k$ according to 
+$\max_k r_{ik}$ using $r_{ik}$ values obtained from running the algorithm on the 
+original test image with four mirror reflections.
+We obtain three groups of images per test image.
+The first group contains the original image, each combination of single mirror 
+reflection removals, and each combination of double mirror reflection removals for 
+a total of 11 images per test image.
+The second group contains the original image and each combination of single mirror 
+reflection removals for a total of 5 images per test image.
+The third group contains the original image and each combination of double mirror 
+reflection removals for a total of 7 images per test image.
+We run the algorithm to estimate the event's location using each image.
+In each group, we compute the mean estimated event location and record the 
+distance between the mean location and the estimated location for each image.
+The distribution of this distance is used to report the agreement in event 
+location measurements.
+Selecting images that contain four mirror reflections and at least 60 counts 
+resulted in 2,251 test images.
+
+We test for the algorithm's convergence by using two different initialization 
+methods for $\bm{p_0}$. 
+We either initialize $\bm{p_0}$ adaptively to the image as in the initialization 
+procedure in \cref{alg:init} or to $(0,0,1.5)$ mm.
+We refer to the two initializations as ``regular" and ``fixed", respectively.
+The test images for this convergence experiment consist of all experimental images 
+that contain at least 60 counts, for a total of 4,351 images.
+
+Results for these two experiments are reported in the ``Results" section.
+
+
+

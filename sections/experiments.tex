@@ -1,0 +1,195 @@
+\section{Experiments} \label{sec:experiments}
+
+\subsection{Hardware}
+
+The experimental hardware consists of a SPAD array, lens, scintillator, and 1 $\mu$Ci Co-60 gamma-ray source.
+We use the SPAD512 array (Pi Imaging), which has $512 \times 512$ pixels with 
+16 $\mu$m pixel pitch.
+The SPAD array is configured to capture 1-bit images with 1.5 $\mu$s 
+integration time.
+The lens is a 50 mm focal length Nikkor lens set to a f/1.2 aperture.
+The scintillator is a GAGG(Ce)-HL crystal (Epic Crystal), which has a 150 ns decay 
+constant, a 530 nm emission peak, and an index of refraction of 1.91.
+Its geometry is a square pyramid with a 20 mm wide base and 5.77 mm 
+height and a 120 degree opening angle at the apex.
+Four surfaces of the scintillator are coated with enhanced specular reflector.
+We account for the scintillator's index of refraction by assuming the 
+scintillator's height is $5.77$ mm  / 1.91 $=3.02$ mm and compute apparent event 
+locations in the smaller volume.
+The camera's lateral field of view (FOV) covers approximately $5 \times 5$ mm at 
+the focal plane.
+The scintillator is positioned such that its apex is in-focus and centered in the 
+FOV, and that its corners are aligned with the corners of the FOV. 
+There is an air gap of approximately 30 mm between the scintillator and the lens.
+The entire setup is placed inside a light-tight box to keep ambient light out.
+The scintillator is shown in Supplementary Fig. \ref*{fig:scintillator}.
+The experimental camera focus on the scintillator is shown in Supplementary Fig. \ref*{fig:experiment_focus}. 
+
+Data collection took place at about 21 degrees Celsius ambient temperature.
+We first captured 130,000 images without the gamma-ray source to characterize the 
+dark count rate and zero out 5\% of pixels with the highest dark count rates.
+After zeroing 5\% of pixels, we observe a median of 4 dark counts per image.
+A histogram of dark counts per image is shown in Supplementary Fig. \ref*{fig:dark_counts_hist}.
+We collect data by placing the gamma-ray source adjacent to the scintillator's 
+apex and passively capturing images.
+All computations are performed in post-processing.
+
+
+\subsection{Parameter calibration}
+Camera parameter values for $S_1$, $S_2$, and $a$ are calibrated by optimizing $Q$ 
+in a grid search on a chosen experimental image.
+We choose the image shown in \cref{fig:calibration}, where the event is 
+approximately centered with evident mirror reflections, and we manually remove 
+dark counts.
+The grid search is performed over event locations at $x$-$y$ coordinates 
+$(0,0)$ mm and $z$-coordinates that span the depth of the scintillator.
+This resulted in $S_1=37.24$ mm, $S_2=109.48$ mm, and $a=0.056$ at event location 
+(0, 0, 2.61) mm.
+
+
+\subsection{Kaleidoscopic model validation}
+We select six experimental images and overlay the algorithm's estimated Gaussian 
+components to validate the presence of mirror reflections in accordance with the 
+kaleidoscopic model, shown in \cref{fig:example_figures}.
+Due to non-idealities, truncation zone boundaries in experimental images do not 
+exactly match those derived using a thin lens as in \cref{sec:image_truncations}.
+We do not attempt to derive truncation lines in experimental images.
+Rather, truncations are evident from missing mirror reflections in the selected images.
+Truncation zone boundaries derived as in \cref{sec:image_truncations} are 
+validated on a simulated image generated with a thin lens and ray tracing, shown in \cref{fig:trunc_examples}.
+
+
+\subsection{Algorithm validation}
+The algorithm's ability to locate an event is validated on experimental data.
+We use $q=10$ nearest neighbors and $\nu=10$ pixels for assigning photon weights 
+using \cref{eqn:weights}.
+Up to ten possible event locations are evaluated in the initialization procedure 
+over the scintillator's depth.
+During one M-step, we run gradient ascent for 1,000 steps with a step size of 1e-7.
+We run the EM algorithm until the distance in $\bm{p_0}$ between consecutive steps 
+is less than 0.01 mm or until 100 steps are taken.
+We capture 13,000,000 images and discard images with less than 60 counts.
+Histograms of counts in an image are shown in Supplementary Fig. \ref*{fig:cap_counts_hist}.
+
+Events cannot be controlled, so their ground truth locations are unknown.
+Rather, we report agreement over multiple measurements of the event's location as follows.
+We use images that contain the event and four mirror reflections as test images.
+The number of mirror reflections in an image is determined using the algorithm.
+Then, we remove combinations of one or two mirror reflections from the image and 
+run the algorithm to estimate the event's location.
+Photon $i$ is classified as belonging to mirror reflection $k$ according to 
+$\max_k r_{ik}$ using $r_{ik}$ values obtained from the original test image with 
+four mirror reflections.
+We obtain three groups of images per test image.
+The first group contains the original image, each combination of single mirror 
+reflection removals, and each combination of double mirror reflection removals for 
+a total of 11 images.
+The second group contains the original image and each combination of single mirror 
+reflection removals for a total of 5 images.
+The third group contains the original image and each combination of double mirror 
+reflection removals for a total of 7 images.
+In each group, we compute the mean estimated event location and store the distance 
+between the mean location and the estimated location for each image.
+Histograms of these distances are reported separately for each group over all test 
+images in \cref{fig:crossval_error}.
+Statistics on these distances are reported for the first group over different 
+ranges of photon counts in a test image in \cref{tab:crossval_thresh_error}.
+
+We test for convergence in the gradient ascent optimization by running the 
+algorithm using two different initialization points for $\bm{p_0}$. 
+We either initialize $\bm{p_0}$ as in the initialization procedure in 
+\cref{alg:init} or to $(0,0,1.5)$ mm.
+We refer to the two initializations as ``regular" and ``fixed", respectively.
+The test images for this convergence experiment consist of all images that contain 
+at least 60 counts, for a total of 4,351 images.
+A histogram of distances between estimated event locations, as well as the number 
+of EM steps taken using the two initialization points per image is shown in \cref{fig:convergence}.
+
+
+\begin{figure*}
+\centering
+\includegraphics[width=\linewidth]{calibration.pdf}
+\caption{\textbf{Experimental calibration image.} a) The original image. b) The image after manually 
+removing dark counts overlaid with the Gaussian components found during the 
+calibration procedure.
+Each dashed red circle is centered on the Gaussian component's mean. 
+The inner and outer circles are one and two standard deviations in radius, respectively.
+Pixels with a photon are enlarged with a $3 \times 3$ filter for visualization purposes.
+} 
+\label{fig:calibration}
+\end{figure*}
+
+
+\begin{figure*}
+\centering
+\includegraphics[width=\linewidth]{example_figures.pdf}
+\caption{\textbf{Selected experimental images.} Experimental images overlaid with the algorithm's estimated Gaussians.
+Each dashed red circle is centered on the Gaussian component's mean. 
+The inner and outer circles are one and two standard deviations in radius, respectively.
+Pixels with a photon are enlarged with a $3 \times 3$ filter for visualization purposes.
+} 
+\label{fig:example_figures}
+\end{figure*}
+
+
+\begin{figure}
+\centering
+\includegraphics[width=.5\linewidth]{trunc_examples.pdf}
+\caption{\textbf{Truncation line examples.} (a) Simulated image of an event and mirror reflections. 
+The image is generated using ray tracing and a thin lens. 
+Rays are randomly emitted from the event location. 
+Rays propagate through the kaleidoscope, through a thin lens, and onto the sensor.
+Photon counts are unrealistically high for illustration purposes.
+(b)-(e) Each mirror reflection's acceptance zone is derived and shaded. 
+A mirror reflection's truncation zone lies outside the acceptance zone.
+(d),(e) The -$x$ and -$y$ mirror reflections are truncated.
+The truncation lines that form the acceptance zone align with the ray 
+tracing image result.} 
+\label{fig:trunc_examples}
+\end{figure}
+
+
+%20250613_cs_apex: 0.144 mm $\pm$ 0.337 mm, 8,707 events
+%20250613_cs_left: 0.144 mm $\pm$ 0.281 mm, 865 events
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|c|ccccc|}
+\hline
+Counts in a test image & 60 - 79 & 80 - 99 & 100 - 119 & 120 - 139 & 140 - 159 \\
+\hline
+Mean (mm)                & 0.28 & 0.26 & 0.19 & 0.19 & 0.15 \\
+Standard dev.  (mm)      & 0.36 & 0.35 & 0.30 & 0.29 & 0.21  \\
+Number of distances    & 9,317  & 7,524  & 4,774  & 2,354  & 792 \\
+\hline
+\end{tabular}
+\caption{\textbf{Agreement in event location measurements.} Mean and standard deviation of distances between mean estimated 
+event location and each image's estimated event location after both single and 
+double mirror reflection removals reported over different ranges of counts in a 
+test image.}
+\label{tab:crossval_thresh_error}
+\end{table}
+
+\begin{figure*}
+\centering
+\includegraphics[width=\linewidth]{crossval_error.pdf}
+\caption{\textbf{Agreement in event location measurements.} Histogram of distances between mean estimated event location and each image's estimated event location after mirror reflection removals. 
+(a) Distances including both single and double mirror reflection removals. Mean $\pm$ stdev: 0.24 $\pm$ 0.34 mm, 24,761 distances.
+(b) Distances including single mirror reflection removal. Mean $\pm$ stdev: 0.16 $\pm$ 0.28 mm, 11,255 distances.
+(c) Distances including double mirror reflection removal. Mean $\pm$ stdev: 0.27 $\pm$ 0.35 mm, 15,757 distances.
+} 
+\label{fig:crossval_error}
+\end{figure*}
+
+\begin{figure*}
+\centering
+\includegraphics[width=\linewidth]{fixed_init_results.pdf}
+\caption{\textbf{Optimization convergence.}
+(a) Distances in estimated event locations between the regular and fixed initialization points. Mean $\pm$ stdev: $0.38 \pm 0.80$ mm, 4,351 events.
+(b) Nummber of steps taken in the EM algorithm from the regular initialization point. Mean $\pm$ stdev: $9.3 \pm 14.2$ steps, 4,351 events.
+(c) Nummber of steps taken in the EM algorithm from the fixed initialization point. Mean $\pm$ stdev: $13.5 \pm 14.9$ steps, 4,351 events.
+} 
+\label{fig:convergence}
+\end{figure*}
+
+
