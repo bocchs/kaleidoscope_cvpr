@@ -13,8 +13,21 @@ Overall, the kaleidoscopic scintillator can increase imaged photon counts by
 multiple factors for increased energy resolution and provide multiple views for 
 measuring events with increased accuracy and robustness using a single camera.
 
+\noindent
+\textbf{Simulated validation of theoretical image truncations.}
+The mirror reflections generated with ray tracing and a thin lens are truncated 
+along the theoretically derived acceptance zones, shown in \cref{fig:trunc_examples}. 
+This suggests the theoretical truncation model is correct.
+In \cref{fig:trunc_examples}, the +$x$, -$x$, and -$y$ mirror reflections are 
+partially truncated, while the +$y$ mirror reflection is not truncated.
+Obtaining accurate experimental acceptance zones would require camera 
+calibration for lens distortions, adapting the scintillator's edges accordingly, 
+and precise knowledge of the focal plane.
+
+\noindent
+\textbf{Experimental validation of kaleidoscopic image model.}
 Various examples where the Gaussian components predicted by the 
-algorithm approximately match the photon clusters of the event and mirror 
+algorithm approximately overlap the photon clusters of the event and mirror 
 reflections by visual inspection are shown in \cref{fig:example_figures}.
 This suggests that mirror reflections are indeed being captured in accordance with 
 the proposed model.
@@ -42,42 +55,25 @@ appear in an image as another mirror reflection of the event.
 An internal reflection has the same effect as adding a mirror to the 
 scintillator's base surface, which can be modeled with the theory introduced in 
 this paper.
-Since internal reflection occurs at a large incidence angle, the image of an 
-event's mirror reflection formed after internal reflection will likely exist away 
-from the optical axis outside of mirror reflections formed without internal reflection. 
+Since internal reflection occurs at a large incidence angle, the 
+mirror reflection of an internal reflection will likely exist 
+outward from the optical axis away from mirror reflections formed 
+without internal reflection. 
 The camera's FOV in the experiments is limited so that we do not 
 expect to image mirror reflections that follow from internal reflections.
 Imaging internal reflections will increase light collection but complicate the 
 captured image.
 
-The calibration procedure resulted in Gaussian mixture model (GMM) components 
-whose centroids are close to but not exactly centered on the mirror reflections in 
-the calibration image in \cref{fig:calibration}.
-Similarly in \cref{fig:example_figures}c, the Gaussian component's centroid is 
-slightly offset from the -$y$ mirror reflection.
-This is likely due to $Q$'s definition and lens distortion.
-An event's location influences both the mean and standard deviation of its image.
-$Q$ takes both parameters into account jointly over the event and all mirror 
-reflections, so the optimal $Q$ value may not correspond to components in the GMM 
-that are all centered on the event or mirror reflections.
-Lens distortions may also cause shifts in the event and mirror reflections that 
-are not accounted for in the model.
-Nonetheless, GMM components are overlaid accurately on the event and mirror 
-reflections in \cref{fig:example_figures}a,b,d,e,f with the same calibrated parameters.
-
-The mirror reflections generated with ray tracing and a thin lens are truncated 
-along the truncation zone boundaries, shown in \cref{fig:trunc_examples}. 
-This suggests the theoretical truncation model is correct.
-Obtaining accurate experimental truncation boundaries would require camera 
-calibration for lens distortions, adapting the scintillator's edges accordingly, 
-and precise knowledge of the focal plane.
-
+\noindent
+\textbf{Experimental validation of localization algorithm.}
 The results in \cref{fig:crossval_error,tab:crossval_thresh_error} demonstrate an 
-agreement in event location measurements among combinations of mirror reflection removals. 
+agreement in event location measurements among combinations of mirror reflection 
+removals.
 This agreement suggests the algorithm is in fact estimating the event's location, 
 and that mirror reflections provide robustness in addition to increased photon counts.
-As expected, agreement in location measurements improves in images with higher 
-photon counts, as shown in \cref{tab:crossval_thresh_error}.
+As expected, there is better agreement among single-removals than double-removals 
+(\cref{fig:crossval_error}), and agreement in location measurements improves in 
+images with higher photon counts (\cref{tab:crossval_thresh_error}).
 
 The mean distance in event location estimates between regular and fixed 
 initialization points is small, shown in \cref{fig:convergence}a.
@@ -90,12 +86,44 @@ Slightly elevated frequency in convergence distances between 1 and 2 mm shown in
 \cref{fig:convergence}a indicates that a fixed initialization can result in 
 convergence at a local optimum rather than the event location.
 
+\noindent
+\textbf{Limitations and future work.}
+A goal of this work is to validate that our proposed localization algorithm is in 
+fact locating the event.
+We do so by reporting that the algorithm obtains spatially close estimates of an 
+event's location over multiple images of the event after removing mirror reflections.
+This provides a measure of localization precision.
+Performing a more complete characterization of the experimental system, 
+including event localization accuracy and resolution, 
+would require scanning the scintillator with a collimated gamma-ray source in
+order to obtain a form of ground truth event locations.
+This work is meant to demonstrate a new radiation detector concept.
+Future work may optimize the hardware configuration or extend the algorithm for 
+specific downstream tasks and characterize overall performance more thoroughly.
+Further investigation of localization accuracy for this specific experimental 
+configuration would provide little additional insight at this stage.
+
 While this work considers one event per image, multiple events from a single 
 particle or gamma-ray can occur. 
 Measuring multi-event cases is needed to perform advanced radiation imaging 
 techniques such as in the Compton camera or neutron scatter camera.
 Future work may consider how to model images that contain multiple events in a 
 kaleidoscopic scintillator.
+
+\textcolor{red}{The calibration procedure resulted in Gaussian mixture model (GMM) components 
+whose centroids are close to but not exactly centered on the mirror reflections in 
+the calibration image in \cref{fig:calibration}.
+Similarly in \cref{fig:example_figures}c, the Gaussian component's centroid is 
+slightly offset from the -$y$ mirror reflection.
+This is likely due to $Q$'s definition and lens distortion.
+An event's location influences both the mean and standard deviation of its image.
+$Q$ takes both parameters into account jointly over the event and all mirror 
+reflections, so the optimal $Q$ value may not correspond to components in the GMM 
+that are all centered on the event or mirror reflections.
+Lens distortions may also cause shifts in the event and mirror reflections that 
+are not accounted for in the model.
+Nonetheless, GMM components are overlaid accurately on the event and mirror 
+reflections in \cref{fig:example_figures}a,b,d,e,f with the same calibrated parameters.}
 
 \iffalse
 \textcolor{red}{

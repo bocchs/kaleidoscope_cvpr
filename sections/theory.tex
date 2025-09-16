@@ -1,3 +1,4 @@
+
 \section{Kaleidoscopic event imaging theory} \label{sec:theory}
 
 Without loss of generality, consider a square pyramid kaleidoscope where each 
@@ -7,13 +8,8 @@ The base of the pyramid is open, through which light exits the kaleidoscope.
 Corrections for modeling a kaleidoscopic scintillator with $n>1$ include 
 a decreased pyramid height and increased opening angle at the apex, based on $n$.
 The true depth of a measured event would then be corrected for using $n$.
-The image of a scintillation event consists of light emitted directly from the 
-event and from the event's mirror reflections.
-Below, we describe the spatial relationship between an event and its mirror 
-reflections, as well as their image on the sensor using a thin lens model.
 
-
-\subsection{Imaging configuration}
+\subsection{Imaging configuration and model}
 
 The world coordinate system's origin is set at the pyramid's apex with the 
 $z$-axis directed perpendicular toward the pyramid's base surface.
@@ -34,6 +30,8 @@ The sensor is placed at a distance $S_2$ from the lens.
 The lens' focal length is set to $f=(S_1^{-1}+S_2^{-1})^{-1}$.
 These parameters are illustrated in \cref{fig:optical_config}.
 
+\ifthenelse{\boolean{figs_in_text}}{
+
 \begin{figure}
 \centering
 \includegraphics[width=.33\linewidth]{optical_config.pdf}
@@ -46,6 +44,8 @@ camera coordinate system origin is located at the lens. The figure only shows
 light emitted directly to the camera.} 
 \label{fig:optical_config}
 \end{figure}
+
+}{}
 
 A scintillation event is approximated as a point source of light.
 Since the optical setup is constrained to short imaging distances, 
@@ -64,8 +64,9 @@ Light is emitted in all directions from the event.
 Photons may arrive at the camera directly from the event or indirectly after 
 reflecting off mirrors.
 Direct photons form a complete image on the sensor, while indirect photons may 
-form an image that is truncated or completely missing as described below.
-
+form an image that is partially truncated or completely missing as described below.
+Below, we describe the spatial relationship between an event and its mirror 
+reflections, as well as their image on the sensor using a thin lens model.
 
 \subsection{Mirror reflections and apertures}
 
@@ -98,6 +99,8 @@ $k$ does not reach the camera and is truncated from the image.
 \cref{fig:trunc_theory}b and d show how truncations form.
 A 3D visualization of light truncation is shown in \cref{fig:trunc_teaser}.
 
+
+\ifthenelse{\boolean{figs_in_text}}{
 
 \begin{figure*}
 \centering
@@ -132,6 +135,8 @@ The truncation line only applies to that mirror reflection.}
 \label{fig:trunc_teaser}
 \end{figure}
 
+}{}
+
 
 In higher-order reflections, light reflecting off mirror $k$ can 
 reflect off another mirror $l$ and generate mirror reflection 
@@ -146,20 +151,20 @@ Higher-order reflections and imaging continue in the same manner.
 A 2D view of truncations from multiple reflections is shown in \cref{fig:trunc_theory}e.
 
 
-\subsection{Image truncations} \label{sec:image_truncations}
+\subsection{Image truncation derivation} \label{sec:image_truncations}
 
 Consider an event's mirror reflection located at $\bm{p_k}$ generated from mirror $k$.
 Each edge of the mirror may impose a truncation line on the camera sensor.
 A truncation line on the sensor, $l_\text{sensor}$, is determined as follows.
 Denote a truncation plane, $P_{\text{trunc}}$, that contains $\bm{p_k}$ and the 
 mirror's edge.
-$P_{\text{trunc}}$ blocks light emitted toward the side facing away from the mirror.
-Denote this side using the normal vector $\bm{n_{\text{trunc}}}$.
+Denote the side of $P_{\text{trunc}}$ that faces away from the mirror using the 
+normal vector $\bm{n_{\text{trunc}}}$.
 Compute the intersection between $P_{\text{trunc}}$ and the focal plane to be the
 truncation line at the focal plane, $l_\text{focal}$.
 Project $\bm{n_{\text{trunc}}}$ onto the focal plane, denoted as 
 $\bm{n_{\text{focal}}}$.
-Scale $l_\text{focal}$ by the magnification, $m=-\frac{S2}{S1}$, to obtain $l_\text{sensor}$.
+Scale $l_\text{focal}$ by the magnification, $m=-\frac{S_2}{S_1}$, to obtain $l_\text{sensor}$.
 Scale $\bm{n_{\text{focal}}}$ by $m$ to obtain $\bm{n_{\text{sensor}}}$.
 
 The truncation side of $l_\text{sensor}$ where photons do not arrive depends on 
@@ -179,3 +184,27 @@ We denote this area as the ``truncation zone" and its complement as the
 The event itself has no truncation zone on the sensor because its image is formed 
 by light emitted directly to the camera without reflections.
 
+\subsection{Image truncation theory validation}
+We validate the theory on image truncations by observing that theoretically 
+derived truncation lines align with photon arrivals in a simulated image.
+We simulate the image of an event in a kaleidoscopic scintillator in the shape of 
+a square pyramid using a thin lens and ray tracing. 
+The kaleidoscope is 3.02 mm in height and has a 20 mm base length.
+We set its index of refraction to 1 and place its apex at $z_w=0$ mm.
+A thin lens with 30 mm focal length and 20 mm diameter is placed at $z_w=50$ mm.
+A $512 \times 512$ sensor with 16 $\mu$m pixel pitch is placed at $z_w=125$ mm.
+100,000 photons are emitted isotropically from $(0.25, 1, 2)$ mm (world 
+coordinates).
+We emit an unrealistically high number of photons so that image truncations are 
+clearly observable.
+Acceptance zones for each mirror reflection are derived and overlaid on the image.
+The resulting image is shown in \cref{fig:trunc_examples}.
+
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth]{trunc_examples.pdf}
+\caption{\textbf{Simulated kaleidoscopic image with theoretical acceptance zones.} 
+Acceptance zones are derived for each mirror reflection and overlaid on the image 
+for the (a) +$x$, (b) +$y$, (c) -$x$, and (d) -$y$ mirror reflections.} 
+\label{fig:trunc_examples}
+\end{figure}

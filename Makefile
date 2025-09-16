@@ -2,7 +2,7 @@
 
 .PHONY: pyramid.pdf supplement.pdf derivations.pdf all clean
 
-all: pyramid supplement derivations
+all: pyramid
 
 # CUSTOM BUILD RULES
 
@@ -32,9 +32,6 @@ pyramid: pyramid.pdf
 
 supplement: supplement.pdf
 	latexmk -pdf -pdflatex="pdflatex -interaction=nonstopmode" -use-make supplement.tex
-
-derivations: derivations.pdf
-	latexmk -pdf -pdflatex="pdflatex -interaction=nonstopmode" -use-make derivations.tex
 
 clean:
 	latexmk -CA

@@ -1,8 +1,10 @@
 \section{Event localization algorithm}
 
+\subsection{Image likelihood model}
+
 We adopt a 2D Gaussian 
 \begin{equation}
-\mathcal{N}(\bm{t};\bm{\mu},\sigma^2)=\frac{1}{2\pi\sigma^2}\exp\left({-\frac{(\bm{t}-\bm{\mu})^T(\bm{t}-\bm{\mu})}{2\sigma^2}}\right) 
+\mathcal{N}(\bm{t};\bm{\mu},\sigma^2)=\frac{1}{2\pi\sigma^2}\exp\left({-\frac{||\bm{t}-\bm{\mu}||_2^2}{2\sigma^2}}\right) 
 \end{equation}
 as the camera's point spread function and assume a circular Gaussian with 
 covariance matrix $\Sigma=\sigma^2 I_{2\times2}$. 
@@ -18,7 +20,7 @@ spatially distributed over a 2D Gaussian with mean
 \end{equation}
 and standard deviation 
 \begin{equation} \label{eqn:stdev}
-\sigma=aA\frac{S_2}{S_1}\frac{|S_1-z_{ck}|}{z_{ck}}
+\sigma_k=aA\frac{S_2}{S_1}\frac{|S_1-z_{ck}|}{z_{ck}}
 \end{equation}
 where \cref{eqn:mu} is derived from perspective projection.
 Each photon arrival is one sample from this Gaussian.
@@ -28,45 +30,54 @@ Each photon arrival is one sample from this Gaussian.
 %produces an image on the sensor in the positive $x$-$y$ quadrant).
 %This is the same as removing the negative signs in \cref{eqn:mu}.}
 
-We model an image of an event in a kaleidoscopic scintillator as a Gaussian 
-mixture model (GMM), where each component in the GMM corresponds to the event or a 
-mirror reflection.
+We model an image of an event in a kaleidoscopic scintillator as a GMM, where each 
+component in the GMM corresponds to the event or a mirror reflection.
 The complete-data likelihood function, $L$, for an image with $N$ photons, 
 one event, and $K$ mirror reflections is
+\begin{linenomath}
 \begin{equation}
 L(\bm{\theta};\bm{t},\bm{z})=\prod_{i=1}^N \prod_{k=0}^K \left[ \pi_k \mathcal{N}(\bm{t_i};\bm{\mu_k},\sigma_k^2) \right]^{\mathbbm{1}{(z_i=k)}}
 \end{equation}
+\end{linenomath}
 where $\bm{\theta}=(\bm{\mu},\bm{\sigma},\bm{\pi})$ are model parameters, 
-and $\pi_k=P(z_i=k)$ is the prior distribution that photon $i$ comes from 
+and $\pi_k=P(z_i=k)$ is the prior distribution that a photon comes from 
 component $k$.
 $\bm{t}=(\bm{t_1}, \bm{t_2}, ..., \bm{t_N})$ are the 2D coordinates of each of 
 $N$ photon arrivals on the sensor and $\bm{z}=(z_1, z_2, ..., z_N)$ are the latent 
 variables of which component in the GMM that a photon belongs to.
 We apply a density-based weighting scheme to photon samples to minimize the 
 influence of sparsely distributed dark counts.
-The weighted complete-data likelihood function, $L_w$, is 
+The weighted complete-data likelihood function, $L_w$, is
+\begin{linenomath}
 \begin{align}
 L_w(\bm{\theta};\bm{t},\bm{z}) &= \prod_{i=1}^N \prod_{k=0}^K \left[ \pi_k \mathcal{N}(\bm{t_i};\bm{\mu_k},\frac{1}{w_i}\sigma_k^2) \right]^{\mathbbm{1}{(z_i=k)}} \\
-&= \prod_{i=1}^N \prod_{k=0}^K \left[ \pi_k \frac{w_i}{2\pi{\sigma_k}^2} \text{exp}\left( -\frac{w_i}{2{\sigma_k}^2} (\bm{t_i}-\bm{\mu_k})^T(\bm{t_i}-\bm{\mu_k}) \right) \right]^{\mathbbm{1}{(z_i=k)}}
+&= \prod_{i=1}^N \prod_{k=0}^K \left[ \pi_k \frac{w_i}{2\pi{\sigma_k}^2} \text{exp}\left( -\frac{w_i}{2{\sigma_k}^2} ||\bm{t_i}-\bm{\mu_k}||_2^2 \right) \right]^{\mathbbm{1}{(z_i=k)}}
 \end{align}
+\end{linenomath}
 where
+\begin{linenomath}
 \begin{align} \label{eqn:weights}
 w_i = \sum_{j \in S_i^q} \text{exp} \left( -\frac{||\bm{t_i}-\bm{t_j}||_2^2}{\nu} \right)
 \end{align}
+\end{linenomath}
 is the weight assigned to photon sample $i$, $S_i^q$ is the set of $q$ 
 nearest neighbors of photon $i$, and $\nu$ is a positive scalar.
 The expected value of the weighted complete-data log-likelihood, $Q$, is
+\begin{linenomath}
 \begin{equation} \label{eqn:Q_eqn}
 \begin{aligned}
-Q & = E_{\bm{z}|\bm{t}}\left[\log L_w(\bm{\theta};\bm{t},\bm{z})\right] \\ & = \sum_i \sum_k r_{ik} \left[ \text{log}(\pi_k) + \text{log}(w_i) - \text{log}(2\pi{\sigma_k}^2) - \frac{w_i{\sigma_k}^{-2}}{2}(\bm{t_i}-\bm{\mu_k})^T(\bm{t_i}-\bm{\mu_k}) \right]
+Q & = E_{\bm{z}|\bm{t}}\left[\log L_w(\bm{\theta};\bm{t},\bm{z})\right] \\ & = \sum_i \sum_k r_{ik} \left[ \text{log}(\pi_k) + \text{log}(w_i) - \text{log}(2\pi{\sigma_k}^2) - \frac{w_i}{2{\sigma_k}^2}||\bm{t_i}-\bm{\mu_k}||_2^2 \right]
 \end{aligned}
 \end{equation}
+\end{linenomath}
 where 
+\begin{linenomath}
 \begin{equation} \label{eqn:r_ik}
 \begin{aligned}
 r_{ik} & = E_{\bm{z}|\bm{t}}[\mathbbm{1}{(z_i=k)}] \\ & = \frac{\pi_k \mathcal{N}(\bm{t_i};\bm{\mu_k},{\sigma_k^2})}{\sum_{k'=0}^K \pi_{k'} \mathcal{N}(\bm{t_i};\bm{\mu_{k'}},{\sigma_{k'}^2})}
 \end{aligned}
 \end{equation}
+\end{linenomath}
 gives the posterior distribution of $\bm{z}$.
 $r_{ik}$ is the probability that photon $i$ comes from event $k$, given 
 the current parameter values.
@@ -79,7 +90,7 @@ In this case, $r_{ik}=0$, and the corresponding term in the
 summation in the denominator of \cref{eqn:r_ik} is 0 when solving for a different $r_{ik}$.
 
 The location of each mirror reflection at $\bm{p_k}$ for $k=1...K$ generated from 
-an event at $\bm{p_0}$ is known based on the kaleidoscope's geometry.
+an event at $\bm{p_0}=(x_0,y_0,z_{c0})$ is known based on the kaleidoscope's geometry.
 For any mirror reflection $k$, each coordinate in $(x_k,y_k,z_{ck})$ is a linear 
 combination of the event's $(x_0,y_0,z_{c0})$ coordinates based on the mirror's 
 reflection transformation.
@@ -93,36 +104,51 @@ Thus, we obtain a GMM where each component is constrained to $\bm{p_0}$, and
 $\bm{\theta}=(x_0,y_0,z_{c0},\bm{\pi})$.
 This results in an optimization problem for estimating $\bm{p_0}$ that captures 
 the global information of the event and all mirror reflections:
+\begin{linenomath}
 \begin{equation} \label{eqn:opti_prob}
 \argmax_{x_0,y_0,z_{c0},\bm{\pi}} Q
 \end{equation}
+\end{linenomath}
 We optimize this using the EM algorithm.
 $Q$ parameterized in terms of $\bm{p_0}$ is derived in Supplementary \cref*{sec:like,sec:weighted_like}.
 
-One or more images of mirror reflections may be missing due to truncations, 
-depending on the event's location.
-Therefore, determining which mirror reflections are present is required to compute $Q$.
-We run an initialization procedure to determine the presence of mirror reflections 
-and to initialize the event's estimated location for the EM algorithm.
-
+\subsection{Optimization algorithm}
 We assume a square pyramid kaleidoscope geometry, up to single-order reflections, 
 and the presence of at least two mirror reflections in an image.
-Each side of the scintillator's square surface is parallel to each respective side 
+Each edge of the scintillator's square surface is parallel to each respective edge 
 of the sensor.
-Mirror reflections will appear along either the $x$ or $y$ axes from the event.
-In the initialization procedure, centroids $\bm{\mu_k}^0$ are obtained using 
-weighted KMeans.
-We obtain combinations of subsets of centroids, compute the standard deviation of 
-a subset's coordinates along the $x$ and $y$ axes to determine which centroids are 
-horizontally or vertically distributed, and classify centroids based on their 
-relative positioning. 
-Centroids are classified as either the event, or $+x$, $-x$, $+y$, or $-y$ mirror reflections. 
-A set of possible event locations that spans the depth of the scintillator is 
-computed using the event's centroid and \cref{eqn:mu}.
+In this configuration, mirror reflections will appear along either the 
+$\pm x$ or $\pm y$ directions from the event's location.
+
+One or more images of mirror reflections may be missing due to truncations 
+depending on the event's location.
+Therefore, determining which mirror reflections are present is required to compute $Q$.
+We run the following initialization procedure to determine the presence of mirror 
+reflections and to initialize the event's estimated location for the EM algorithm.
+
+\noindent
+\textbf{Initialization procedure.}
+The initialization procedure can be summarized as computing 
+\begin{equation}
+\argmax_{x_0,y_0,z_{c0},C} Q
+\end{equation}
+over a set of possible event locations and $C \in \{3,4,5\}$ clusters 
+(number of mirror reflections plus the event).
+First, centroids are computed using weighted KMeans with $C$ clusters.
+Centroids are then classified as either the event, or $+x$, $-x$, $+y$, or $-y$ 
+mirror reflections based on their relative positioning.
+This is done by taking combinations of subsets of centroids and computing the 
+standard deviation of a subset's coordinates along the $x$ and $y$ dimensions to 
+determine which centroids are horizontally or vertically aligned.
+A set of possible event locations that is uniformly spaced over the depth 
+($z$ dimension) of the scintillator is computed using the event's centroid and \cref{eqn:mu}.
 The number of mirror reflections, which reflections are present, and the 
 initialization point for $\bm{p_0}$ are those that correspond to the 
-highest value of $Q$ out of this set over 3, 4, and 5 clusters in KMeans.
-The number of clusters corresponds to the number of mirror reflections plus the event.
+highest value of $Q$ out of this set and over $C \in \{3, 4, 5\}$.
+When computing $Q$, terms that correspond to a mirror reflection $k$ are included
+only if that mirror reflection is determined to be present.
+$\bm{\pi}$ is initialized to the uniform distribution.
+\iffalse
 This initialization procedure is described in \cref{alg:init}.
 $\bm{\pi}$ is initialized to the uniform distribution.
 
@@ -155,12 +181,15 @@ $Q_{max} = -\infty$\;
   }
 }
 \end{algorithm}
+\fi
 
+\noindent
+\textbf{Optimization procedure.}
 During the E-step, $r_{ik}$ is updated using \cref{eqn:r_ik} and the current 
 values of $\bm{p_0}$ and $\bm{\pi}$.
-During the M-step, $\bm{p_0}$ is updated by optimizing 
-$Q$ with gradient ascent, 
-and $\bm{\pi}$ is updated using $\pi_k=\frac{1}{N}\sum_{i=1}^N r_{ik}$.
+During the M-step, $\bm{p_0}$ is updated by fixing $\bm{\pi}$ and optimizing 
+$Q$ with gradient ascent. 
+$\bm{\pi}$ is then updated using $\pi_k=\frac{1}{N}\sum_{i=1}^N r_{ik}$.
 Gradients are derived in Supplementary \cref*{sec:like,sec:weighted_like}.
 In both the E and M steps, terms that correspond to a mirror reflection $k$ are 
 included in the computation only if that mirror reflection is present in the image.
@@ -170,4 +199,5 @@ $i$ that lies in mirror $k$'s truncation zone.
 We do not have accurate knowledge of truncation boundaries in experimental data,
 so we only determine the presence of mirror reflections rather than partial 
 truncations in the experiments.
-
+The kaleidoscopic image model and event localization algorithm are validated on 
+experimental data.
