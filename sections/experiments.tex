@@ -94,29 +94,23 @@ mirror reflections from the image.
 Photon $i$ is classified as belonging to mirror reflection $k$ according to 
 $\max_k r_{ik}$ using $r_{ik}$ values obtained after running the algorithm's 
 optimization procedure on the original test image with four mirror reflections.
-We organize these new images into the following three groups.
-\emph{Group A} contains the original image, each combination of single mirror 
-reflection removals, and each combination of double mirror reflection removals for 
-a total of 11 images per test image.
-\emph{Group B} contains the original image and each combination of single mirror 
-reflection removals for a total of 5 images per test image.
-\emph{Group C} contains the original image and each combination of double mirror 
-reflection removals for a total of 7 images per test image.
+Thus, for one test image, we generate 4 images with one mirror reflection removed 
+and 6 images with two mirror reflections removed for a total of 11 images 
+corresponding to one event.
 We run the algorithm's initialization and optimization procedures on each image to 
 obtain multiple measurements of the event's location.
-We compute the mean estimated event location over the group of images 
-corresponding to an event.
+We compute the mean estimated event location over the 11 images corresponding to 
+one event.
 We record the distance between the mean location and the estimated location for 
-each individual image in the group.
-For example, one test image in Group A results in 11 recorded distances.
+each individual image.
 The distribution of this distance over all test images is used to report the 
 agreement in event location measurements, where short distances indicate good 
 agreement (high precision).
 Selecting images that contain four mirror reflections and at least 60 counts 
 resulted in 2,251 test images.
-Distances in each group of images are reported in histograms in \cref{fig:crossval_error}.
-Statistics on the distances in Group A over different ranges of photon counts in a 
-test image are reported in \cref{tab:crossval_thresh_error}.
+Recorded distances are reported in histograms in \cref{fig:crossval_error}.
+%Statistics on the distances in Group A over different ranges of photon counts in a 
+%test image are reported in \cref{tab:crossval_thresh_error}.
 
 We test for the algorithm's convergence by using two different initialization 
 methods for $\bm{p_0}$. 
@@ -128,16 +122,13 @@ that contain at least 60 counts, for a total of 4,351 images.
 Distances between estimated event locations using the regular and fixed 
 initialization methods, as well as the number of EM steps taken, are shown in \cref{fig:convergence}.
 
-\begin{figure*}
+\begin{figure}
 \centering
-\includegraphics[width=\linewidth]{crossval_error.pdf}
-\caption{\textbf{Agreement in event location measurements.} Histogram of distances between mean estimated event location and each image's estimated event location after mirror reflection removals. 
-(a) Distances including both single and double mirror reflection removals (Group A). Mean $\pm$ stdev: 0.24 $\pm$ 0.34 mm, 24,761 distances.
-(b) Distances including single mirror reflection removal (Group B). Mean $\pm$ stdev: 0.16 $\pm$ 0.28 mm, 11,255 distances.
-(c) Distances including double mirror reflection removal (Group C). Mean $\pm$ stdev: 0.27 $\pm$ 0.35 mm, 15,757 distances.
+\includegraphics[width=\linewidth]{crossval_error_v2.pdf}
+\caption{\textbf{Agreement in event location measurements.} Histogram of distances between mean estimated event location and each image's estimated event location after mirror reflection removals. Distances including both single and double mirror reflection removals. Mean $\pm$ stdev: 0.24 $\pm$ 0.34 mm, 24,761 distances.
 } 
 \label{fig:crossval_error}
-\end{figure*}
+\end{figure}
 
 \begin{figure*}
 \centering
@@ -151,7 +142,7 @@ initialization methods, as well as the number of EM steps taken, are shown in \c
 \end{figure*}
 
 
-
+\iffalse
 \begin{table}[h!]
 \centering
 \begin{tabular}{|c|ccccc|}
@@ -169,5 +160,5 @@ estimated event location after both single and double mirror reflection removals
 (Group A) reported over different ranges of counts in a test image.}
 \label{tab:crossval_thresh_error}
 \end{table}
-
+\fi
 

@@ -66,22 +66,18 @@ captured image.
 
 \noindent
 \textbf{Experimental validation of localization algorithm.}
-The results in \cref{fig:crossval_error,tab:crossval_thresh_error} demonstrate an 
-agreement in event location measurements among combinations of mirror reflection 
-removals.
+The results in \cref{fig:crossval_error} demonstrate an agreement in event 
+location measurements among combinations of mirror reflection removals.
 This agreement suggests the algorithm is in fact estimating the event's location, 
 and that mirror reflections provide robustness in addition to increased photon counts.
-As expected, there is better agreement among single-removals than double-removals 
-(\cref{fig:crossval_error}), and agreement in location measurements improves in 
-images with higher photon counts (\cref{tab:crossval_thresh_error}).
 
 The mean distance in event location estimates between regular and fixed 
 initialization points is small, shown in \cref{fig:convergence}a.
 This indicates that the gradient ascent optimization during the M-step does in 
 fact step toward the event location and approaches it.
-\cref{fig:convergence}b,c indicate that a regular initialization point results in 
-convergence with fewer EM steps because of its proximity to the event compared to 
-a fixed initialization point. 
+\cref{fig:convergence}b,c indicate that setting the initialization point using the 
+algorithm's initialization proecdure results in convergence with fewer EM steps 
+because of its proximity to the event compared to a fixed initialization point. 
 Slightly elevated frequency in convergence distances between 1 and 2 mm shown in 
 \cref{fig:convergence}a indicates that a fixed initialization can result in 
 convergence at a local optimum rather than the event location.
