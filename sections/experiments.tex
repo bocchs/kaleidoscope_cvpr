@@ -50,30 +50,14 @@ consecutive steps is less than 0.01 mm, or until 100 steps are taken.
 \noindent
 \textbf{Experimental camera parameter calibration.}
 Experimental camera parameter values for $S_1$, $S_2$, and $a$ are calibrated by 
-optimizing $Q$ in a grid search on a chosen experimental image.
-We choose the image shown in \cref{fig:calibration}, where the event is 
-approximately centered with evident mirror reflections, and we manually remove 
-dark counts.
+optimizing $Q$ in a grid search on a selected experimental image.
+We select the image shown in Supplementary \cref*{fig:calibration}, where the 
+event is approximately centered with evident mirror reflections, and we manually 
+remove dark counts.
 The grid search is performed over event locations at $x$-$y$ coordinates 
 $(0,0)$ mm and $z$-coordinates that span the depth of the scintillator.
 This resulted in $S_1=37.24$ mm, $S_2=109.48$ mm, and $a=0.056$ at event location 
 (0, 0, 2.61) mm.
-
-\ifthenelse{\boolean{figs_in_text}}{
-
-\begin{figure*}
-\centering
-\includegraphics[width=\linewidth]{calibration.pdf}
-\caption{\textbf{Experimental calibration image.} a) The original image. b) The image after manually 
-removing dark counts overlaid with the Gaussian components found during the 
-calibration procedure.
-Each dashed red circle is centered on the Gaussian component's mean. 
-The inner and outer circles are one and two standard deviations in radius, respectively.
-Pixels with a photon are enlarged with a $3 \times 3$ filter for visualization purposes.
-} 
-\label{fig:calibration}
-\end{figure*}
-}{}
 
 \noindent
 \textbf{Kaleidoscopic image model validation.}
@@ -118,7 +102,8 @@ a total of 11 images per test image.
 reflection removals for a total of 5 images per test image.
 \emph{Group C} contains the original image and each combination of double mirror 
 reflection removals for a total of 7 images per test image.
-We run the algorithm to estimate the event's location using each image.
+We run the algorithm's initialization and optimization procedures on each image to 
+obtain multiple measurements of the event's location.
 We compute the mean estimated event location over the group of images 
 corresponding to an event.
 We record the distance between the mean location and the estimated location for 

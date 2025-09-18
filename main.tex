@@ -10,6 +10,9 @@
 % Import additional packages in the preamble file, before hyperref
 \input{preamble}
 
+\usepackage{xr}
+\externaldocument{supplement}
+
 \newboolean{figs_in_text}
 \setboolean{figs_in_text}{true}
 
@@ -67,6 +70,6 @@ First line of institution2 address\\
 }
 
 % WARNING: do not forget to delete the supplementary pages from your submission 
-\input{supplement}
+%\input{supplement}
 
 \end{document}

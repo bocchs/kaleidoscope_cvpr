@@ -34,13 +34,8 @@ These parameters are illustrated in \cref{fig:optical_config}.
 
 \begin{figure}
 \centering
-\includegraphics[width=.33\linewidth]{optical_config.pdf}
-\caption{\textbf{Imaging parameters and coordinate systems.} 
-The optical configuration consists of a lens with diameter $A$, distance from 
-lens to focal plane $S_1$, and distance from lens to sensor $S_2$. The diameter 
-of an event's image on the sensor is $c$. The camera is focused at the 
-scintillator's apex where the world coordinate system origin is located. The 
-camera coordinate system origin is located at the lens. The figure only shows 
+\includegraphics[width=\linewidth]{optical_config.pdf}
+\caption{\textbf{Imaging parameters and coordinate systems.} The figure only shows 
 light emitted directly to the camera.} 
 \label{fig:optical_config}
 \end{figure}
@@ -97,7 +92,7 @@ For a single reflection, light from $\bm{p_k}$ that does not pass through mirror
 $k$ does not reach the camera and is truncated from the image.
 \cref{fig:trunc_theory}a and c show a 2D view of the propagation of light over a single reflection without truncations.
 \cref{fig:trunc_theory}b and d show how truncations form.
-A 3D visualization of light truncation is shown in \cref{fig:trunc_teaser}.
+A 3D visualization of light truncation is shown in Supplementary \cref*{fig:trunc_teaser}.
 
 
 \ifthenelse{\boolean{figs_in_text}}{
@@ -119,21 +114,9 @@ All light that forms the mirror reflection reaches the sensor.
 Some light from the mirror reflection is stopped at the mirror's edge and 
 truncated on the sensor.
 (e) Light from a double mirror reflection is stopped at both mirrors' edges and truncated on the sensor. 
-The mirror for the second reflection is illustrated along the optical axis.} 
+The mirror for the second reflection is illustrated along the light's path.} 
 \label{fig:trunc_theory}
 \end{figure*}
-
-
-\begin{figure}
-\centering
-\includegraphics[width=.4\linewidth]{trunc_teaser.jpg}
-\caption{\textbf{Image truncation example in 3D.}
-The image of an event and one mirror reflection is shown. 
-Light corresponding to the mirror reflection is truncated at the mirror's edge, 
-resulting in a truncation line in the image.
-The truncation line only applies to that mirror reflection.}
-\label{fig:trunc_teaser}
-\end{figure}
 
 }{}
 

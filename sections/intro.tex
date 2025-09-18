@@ -135,15 +135,16 @@ arrives at the camera sensor.
 \item An algorithm to estimate an event's location in a kaleidoscopic scintillator. 
 The algorithm optimizes a probabilistic model that jointly parameterizes the 
 scintillation event and mirror reflections in an image in terms of the event's location. 
-The algorithm is validated on experimental data captured with a SPAD camera and a 
-gamma-ray source.
+The algorithm's ability to locate an event is validated on experimental data 
+captured with a SPAD camera and a gamma-ray source.
+\item \textcolor{red}{Is the captured dataset a contribution?}
 \end{itemize}
 An overview of the method is illustrated in \cref{fig:teaser}.
 
 
 \ifthenelse{\boolean{figs_in_text}}{
 
-\begin{figure*}
+\begin{figure}
 \centering
 \includegraphics[width=\linewidth]{teaser_pipeline.jpg}
 \caption{\textbf{Overview of image capture and event localization method.}
@@ -156,7 +157,7 @@ This relationship between the event and mirror reflections is embedded in a
 Gaussian mixture model whose likelihood is maximized to estimate the event's location.
 } 
 \label{fig:teaser}
-\end{figure*}
+\end{figure}
 
 }{}
 

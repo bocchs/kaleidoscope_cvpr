@@ -2,7 +2,7 @@
 
 .PHONY: pyramid.pdf supplement.pdf derivations.pdf all clean
 
-all: pyramid
+all: pyramid supplement
 
 # CUSTOM BUILD RULES
 

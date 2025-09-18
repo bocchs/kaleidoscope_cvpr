@@ -1,8 +1,48 @@
+\documentclass{article}
+%\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{wasysym}
+\usepackage{xcolor}
+\usepackage{bm}
+\usepackage{bbm}
+\usepackage{gensymb}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage[superscript,nomove]{cite}
+\usepackage{hyperref}
+\usepackage{multirow}
+\usepackage{enumitem}
+\usepackage[margin=1in]{geometry}
+\usepackage[linesnumbered,ruled,vlined]{algorithm2e}
+\makeatletter 
+\g@addto@macro{\@algocf@init}{\SetKwInOut{Parameter}{Arguments}} 
+\makeatother 
+\graphicspath{{figures/}}
+\usepackage{subfiles} % Best loaded last in the preamble
+%% Support for easy cross-referencing (e.g. \cref{sec:intro}
+% configured with \AtEndPreamble as it needs to be called after hyperref
+\usepackage[capitalize]{cleveref}
+\crefname{section}{Sec.}{Secs.}
+\Crefname{section}{Section}{Sections}
+\Crefname{table}{Table}{Tables}
+\crefname{table}{Tab.}{Tabs.}
 
-\clearpage
-\setcounter{page}{1}
-\maketitlesupplementary
+\usepackage{float}
 
+\usepackage{xr}
+\externaldocument{main}
+
+\begin{document}
+
+\title{Kaleidoscopic Scintillation Event Imaging \\
+\large Supplementary Material}
+
+\date{}
+
+\maketitle
 
 \section{Derivations}
 \subsection{Likelihood and gradient} \label{sec:like}
@@ -16,6 +56,8 @@ $\alpha_{xyk}$ denotes the coefficient in $T_k$ corresponding to $x_0$ and $y_k$
 $k=0$ refers to the event itself, and not a mirror reflection.
 These derivations assume $\bm{\mu_k} = \left[-\frac{S_2}{z_k} x_k, -\frac{S_2}{z_k} y_k\right]$. 
 %Modifications have to be made if using $\bm{\mu_k} = \left[\frac{S_2}{z_k} x_k, \frac{S_2}{z_k} y_k\right]$.
+
+
 
 \begin{align}
 x_k = \alpha_{xxk}x_0 + \alpha_{xyk}y_0 + \alpha_{xzk}z_{w0}
@@ -202,12 +244,15 @@ f(x_k,y_k,z_k) = \left({t_{ix}}^2 + 2t_{ix}S_2\frac{x_k}{z_k} + {S_2}^2\left(\fr
 \end{align}
 
 
+
 \subsection{Weighted likelihood} \label{sec:weighted_like}
 
 $w_i$ is the weight assigned to photon sample $i$.
 $w_i = \sum\limits_{j \in S_i^q} \text{exp} \left( -\frac{||\bm{t_i}-\bm{t_j}||_2^2}{\nu} \right)$
 where $S_i^q$ is the set of $q$ nearest neighbors of photon $i$, and $\nu$ is a 
 positive scalar.
+
+
 
 \begin{align}
 L(\bm{\theta};\bm{t},\bm{z}) &= \prod_{i=1}^N \prod_{k=0}^K \left[ \pi_k \mathcal{N}(\bm{t_i};\bm{\mu_k},\frac{1}{w_i}\sigma_k^2) \right]^{\mathbbm{1}{(z_i=k)}} \\
@@ -231,13 +276,26 @@ Q = \sum_i \sum_k r_{ik} \left[ \text{log}(\pi_k) + \text{log}(w_i) - \text{log}
 \end{align}
 
 
+
 \section{Supplementary Figures}
 
 \begin{figure}
 \centering
+\includegraphics[width=.5\linewidth]{trunc_teaser.jpg}
+\caption{\textbf{Image truncation example in 3D.}
+The image of an event and one mirror reflection is shown. 
+Light corresponding to the mirror reflection is truncated at the mirror's edge, 
+resulting in a truncation line in the image.
+The truncation line only applies to that mirror reflection.}
+\label{fig:trunc_teaser}
+\end{figure}
+
+\begin{figure}
+\centering
 \includegraphics[width=.5\linewidth]{dark_counts_hist_median=4.png}
-\caption{\textbf{Histogram of dark counts per image.} A median of 4 dark counts 
-per image after zeroing hot pixels is observed out of 130,000 images taken in the dark.} 
+\caption{\textbf{Histogram of dark counts per experimental image.} 
+A median of 4 dark counts per image after zeroing hot pixels is observed out of 
+130,000 images taken in the dark with no gamma-ray source present.} 
 \label{fig:dark_counts_hist}
 \end{figure}
 
@@ -245,7 +303,7 @@ per image after zeroing hot pixels is observed out of 130,000 images taken in th
 \begin{figure}
 \centering
 \includegraphics[width=\linewidth]{capture_counts_hist.pdf}
-\caption{\textbf{Histogram of counts in an image with the gamma-ray source present.} A median of 4 counts 
+\caption{\textbf{Histogram of counts per experimental image with the gamma-ray source present.} A median of 4 counts 
 per image after zeroing hot pixels is observed out of 13,000,000 images taken with 
 the gamma-ray source present. 
 a) The full histogram. 
@@ -254,6 +312,18 @@ b) The histogram pertaining to at least 60 counts in an image.}
 \end{figure}
 
 
+\begin{figure*}
+\centering
+\includegraphics[width=\linewidth]{calibration.pdf}
+\caption{\textbf{Selected experimental calibration image.} a) The original image. b) The image after manually 
+removing dark counts overlaid with the Gaussian components found during the 
+calibration procedure.
+Each dashed red circle is centered on the Gaussian component's mean. 
+The inner and outer circles are one and two standard deviations in radius, respectively.
+Pixels with a photon are enlarged with a $3 \times 3$ filter for visualization purposes.
+} 
+\label{fig:calibration}
+\end{figure*}
 
 \begin{figure}
 \centering
@@ -279,5 +349,5 @@ b) The histogram pertaining to at least 60 counts in an image.}
 \end{figure}
 
 
-
+\end{document}
 

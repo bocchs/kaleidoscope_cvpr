@@ -40,8 +40,7 @@ L(\bm{\theta};\bm{t},\bm{z})=\prod_{i=1}^N \prod_{k=0}^K \left[ \pi_k \mathcal{N
 \end{equation}
 \end{linenomath}
 where $\bm{\theta}=(\bm{\mu},\bm{\sigma},\bm{\pi})$ are model parameters, 
-and $\pi_k=P(z_i=k)$ is the prior distribution that a photon comes from 
-component $k$.
+and $\pi_k$ is the mixing weight for component $k$.
 $\bm{t}=(\bm{t_1}, \bm{t_2}, ..., \bm{t_N})$ are the 2D coordinates of each of 
 $N$ photon arrivals on the sensor and $\bm{z}=(z_1, z_2, ..., z_N)$ are the latent 
 variables of which component in the GMM that a photon belongs to.
@@ -81,13 +80,6 @@ r_{ik} & = E_{\bm{z}|\bm{t}}[\mathbbm{1}{(z_i=k)}] \\ & = \frac{\pi_k \mathcal{N
 gives the posterior distribution of $\bm{z}$.
 $r_{ik}$ is the probability that photon $i$ comes from event $k$, given 
 the current parameter values.
-
-Truncations can be incorporated in setting the value of $r_{ik}$. 
-If photon $i$ at location $\bm{t_i}$ on the sensor lies in the truncation zone 
-belonging to mirror reflection $k$, then the probability that photon 
-$i$ belongs to mirror reflection $k$ is 0. 
-In this case, $r_{ik}=0$, and the corresponding term in the 
-summation in the denominator of \cref{eqn:r_ik} is 0 when solving for a different $r_{ik}$.
 
 The location of each mirror reflection at $\bm{p_k}$ for $k=1...K$ generated from 
 an event at $\bm{p_0}=(x_0,y_0,z_{c0})$ is known based on the kaleidoscope's geometry.
