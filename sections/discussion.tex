@@ -66,17 +66,22 @@ captured image.
 
 \noindent
 \textbf{Experimental validation of localization algorithm.}
-The results in \cref{fig:crossval_error} demonstrate an agreement in event 
-location measurements among combinations of mirror reflection removals.
-This agreement suggests the algorithm is in fact estimating the event's location, 
-and that mirror reflections provide robustness in addition to increased photon counts.
+The results in \cref{fig:crossval_error} show that most distances between the mean 
+and individual estimated event locations are small, demonstrating an agreement in 
+event location measurements among different images of the same event with removed 
+mirror reflections.
+This agreement suggests the algorithm is in fact estimating the event's location 
+and not spurious light sources.
+Such a result would be unlikely if images contained spurious light that does not 
+originate from an event or that that does not follow the kaleidoscopic model.
+The results also show that that mirror reflections provide robustness in 
+addition to increased photon counts.
 
 The mean distance in event location estimates between regular and fixed 
 initialization points is small, shown in \cref{fig:convergence}a.
-This indicates that the gradient ascent optimization during the M-step does in 
-fact step toward the event location and approaches it.
+This indicates that the gradient ascent optimization during the M-step does indeed step toward the event location and approaches it.
 \cref{fig:convergence}b,c indicate that setting the initialization point using the 
-algorithm's initialization proecdure results in convergence with fewer EM steps 
+algorithm's initialization procedure results in convergence with fewer EM steps 
 because of its proximity to the event compared to a fixed initialization point. 
 Slightly elevated frequency in convergence distances between 1 and 2 mm shown in 
 \cref{fig:convergence}a indicates that a fixed initialization can result in 
@@ -89,10 +94,10 @@ fact locating the event.
 We do so by reporting that the algorithm obtains spatially close estimates of an 
 event's location over multiple images of the event after removing mirror reflections.
 This provides a measure of localization precision.
-Performing a more complete characterization of the experimental system, 
-including event localization accuracy and resolution, 
-would require scanning the scintillator with a collimated gamma-ray source in
-order to obtain a form of ground truth event locations.
+We do not provide a measure of localization accuracy or bias.
+Performing a more complete characterization of the experimental system's 
+localization performance would require scanning the scintillator with a collimated 
+gamma-ray source in order to obtain a form of ground truth event locations.
 This work is meant to demonstrate a new radiation detector concept.
 Future work may optimize the hardware configuration or extend the algorithm for 
 specific downstream tasks and characterize overall performance more thoroughly.
