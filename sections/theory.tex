@@ -1,13 +1,14 @@
 
 \section{Kaleidoscopic event imaging theory} \label{sec:theory}
 
-Without loss of generality, consider a square pyramid kaleidoscope where each 
-face is a specular surface, 
-and the index of refraction inside the kaleidoscope is $n=1$.
-The base of the pyramid is open, through which light exits the kaleidoscope.
-Corrections for modeling a kaleidoscopic scintillator with $n>1$ include 
-a decreased pyramid height and increased opening angle at the apex, based on $n$.
-The true depth of a measured event would then be corrected for using $n$.
+Without loss of generality, we consider a square pyramid scintillator throughout 
+this paper. 
+Each face of the scintillator, except for the base of the pyramid, is a specular surface.
+We assume the scintillator's index of refraction is $n=1$. 
+We correct for the scintillator's true $n>1$ by modeling a pyramid with decreased 
+height and increased opening angle at the apex based on $n$.
+The true depth of an event measured in the smaller apparent volume can then be 
+corrected for using $n$.
 
 \subsection{Imaging configuration and model}
 
@@ -29,6 +30,12 @@ A thin lens with diameter $A$ is placed at a distance $S_1$ from the focal plane
 The sensor is placed at a distance $S_2$ from the lens.
 The lens' focal length is set to $f=(S_1^{-1}+S_2^{-1})^{-1}$.
 These parameters are illustrated in \cref{fig:optical_config}.
+
+Throughout this paper, the scintillator is oriented so that its base surface's 
+edges are parallel with the sensor's respective edges. 
+In this manner, the normal vector for each specular surface of the scintillator is 
+aligned along the $x$ or $y$ axes.
+We denote the scintillator's four specular surfaces as +$x$, +$y$, -$x$, or -$y$ mirrors.
 
 \ifthenelse{\boolean{figs_in_text}}{
 
@@ -187,7 +194,7 @@ The resulting image is shown in \cref{fig:trunc_examples}.
 \centering
 \includegraphics[width=\linewidth]{trunc_examples.pdf}
 \caption{\textbf{Simulated kaleidoscopic image with theoretical acceptance zones.} 
-Acceptance zones are derived for each mirror reflection and overlaid on the image 
-for the (a) +$x$, (b) +$y$, (c) -$x$, and (d) -$y$ mirror reflections.} 
+Acceptance zones are derived for each mirror reflection and overlaid in gray on 
+the image for the (a) +$x$, (b) +$y$, (c) -$x$, and (d) -$y$ mirror reflections.} 
 \label{fig:trunc_examples}
 \end{figure}
