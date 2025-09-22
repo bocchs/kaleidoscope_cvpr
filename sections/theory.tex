@@ -41,7 +41,7 @@ We denote the scintillator's four specular surfaces as +$x$, +$y$, -$x$, or -$y$
 
 \begin{figure}
 \centering
-\includegraphics[width=\linewidth]{optical_config.pdf}
+\includegraphics[width=\linewidth]{optical_config_horiz.png}
 \caption{\textbf{Imaging parameters and coordinate systems.} The figure only shows 
 light emitted directly to the camera.} 
 \label{fig:optical_config}
@@ -106,21 +106,17 @@ A 3D visualization of light truncation is shown in Supplementary \cref*{fig:trun
 
 \begin{figure*}
 \centering
-\includegraphics[width=\linewidth]{trunc_theory.pdf}
+\includegraphics[width=\linewidth]{truncation_theory.png}
 \caption{\textbf{Mirror apertures and image truncations.} 
 An event emits light onto a mirror that reflects into the camera. 
 Some light might not reach the sensor due to finite mirrors and defocus blur.
-(a) The mirror reflection is located beyond the focal plane. 
-All light that forms the mirror reflection reaches the sensor.
-(b) The mirror reflection is located beyond the focal plane. 
-Some light from the mirror reflection is stopped at the mirror's edge and 
-truncated on the sensor.
-(c) The mirror reflection is located within the focal plane.
-All light that forms the mirror reflection reaches the sensor.
-(d) The mirror reflection is located within the focal plane. 
-Some light from the mirror reflection is stopped at the mirror's edge and 
-truncated on the sensor.
-(e) Light from a double mirror reflection is stopped at both mirrors' edges and truncated on the sensor. 
+Example cases include the following:
+The mirror reflection is located within the focal plane (a,b,e) or beyond the focal plane (c,d).
+All light that forms the mirror reflection reaches the sensor (a,c).
+Some light that would form the mirror reflection is stopped at the mirror's edge 
+and truncated on the sensor (b,d).
+Some light that would form a double mirror reflection is stopped at both mirrors' 
+edges and truncated on the sensor (e). 
 The mirror for the second reflection is illustrated along the light's path.} 
 \label{fig:trunc_theory}
 \end{figure*}
@@ -170,7 +166,7 @@ is truncated and contains no photon arrivals (\cref{fig:trunc_theory}d).
 The area on the sensor where photons cannot arrive is the union of the
 truncation sides of each truncation line.
 We denote this area as the ``truncation zone" and its complement as the 
-``acceptance zone" (\cref{fig:trunc_theory}b,d,e).
+``acceptance zone" (\cref{fig:trunc_theory}b).
 The event itself has no truncation zone on the sensor because its image is formed 
 by light emitted directly to the camera without reflections.
 
@@ -190,11 +186,11 @@ clearly observable.
 Acceptance zones for each mirror reflection are derived and overlaid on the image.
 The resulting image is shown in \cref{fig:trunc_examples}.
 
-\begin{figure}
+\begin{figure*}
 \centering
-\includegraphics[width=\linewidth]{trunc_examples.pdf}
+\includegraphics[width=\linewidth]{trunc_horiz.png}
 \caption{\textbf{Simulated kaleidoscopic image with theoretical acceptance zones.} 
 Acceptance zones are derived for each mirror reflection and overlaid in gray on 
 the image for the (a) +$x$, (b) +$y$, (c) -$x$, and (d) -$y$ mirror reflections.} 
 \label{fig:trunc_examples}
-\end{figure}
+\end{figure*}
