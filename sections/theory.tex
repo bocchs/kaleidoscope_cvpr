@@ -72,14 +72,14 @@ reflections, as well as their image on the sensor using a thin lens model.
 
 \subsection{Mirror reflections and apertures}
 
-Consider an event at $\bm{p_0}=(x_0,y_0,z_{w0})$.
+Consider an event located at $\bm{p_0}$.
 Mirror $k$ with normal vector $\bm{n_k}$ produces a mirror reflection located at 
 \begin{equation}
-\bm{p_k}=T_k\bm{p_0}
+\bm{p_k}=\bm{T_k}\bm{p_0}
 \end{equation}
 where
 \begin{equation} \label{eqn:ref_trans}
-T_k=I_{3\times3} - 2\bm{n_k}\bm{n_k}^T
+\bm{T_k}=\bm{I}_{3\times3} - 2\bm{n_k}\bm{n_k}^T
 \end{equation}
 is the mirror's transformation.
 The mirror reflection of an event is also a point source of light.
@@ -126,7 +126,7 @@ The mirror for the second reflection is illustrated along the light's path.}
 
 In higher-order reflections, light reflecting off mirror $k$ can 
 reflect off another mirror $l$ and generate mirror reflection 
-at $\bm{p_l}=T_l \bm{p_k}$.
+at $\bm{p_l}=\bm{T_l} \bm{p_k}$.
 The light incident on mirror $l$ from $\bm{p_k}$ passes through the aperture 
 of mirror $k$.
 If this light spans a partial area $A_l$ of mirror $l$, then mirror $l$'s aperture is $A_l$.
