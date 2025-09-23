@@ -23,22 +23,18 @@ and standard deviation
 \sigma_k=aA\frac{S_2}{S_1}\frac{|S_1-z_{ck}|}{z_{ck}}
 \end{equation}
 where \cref{eqn:mu} is derived from perspective projection.
-Each photon arrival is one sample from this Gaussian.
 %\textcolor{red}{
 %In this paper, we flip the pixels of a frame so that photons arrive on the same 
 %side of the sensor as the event (e.g. an event in the positive $x$-$y$ quadrant 
 %produces an image on the sensor in the positive $x$-$y$ quadrant).
 %This is the same as removing the negative signs in \cref{eqn:mu}.}
 
-We model an image of an event in a kaleidoscopic scintillator as a GMM, where each 
-component in the GMM corresponds to the event or a mirror reflection.
+We model an image of an event in a kaleidoscopic scintillator as a Gaussian 
+mixture model (GMM), where each component in the GMM corresponds to the event or a 
+mirror reflection.
 The complete-data likelihood function, $L$, for an image with $N$ photons, 
 one event, and $K$ mirror reflections is
-\begin{linenomath}
-\begin{equation}
-L(\bm{\theta};\bm{t},\bm{z})=\prod_{i=1}^N \prod_{k=0}^K \left[ \pi_k \mathcal{N}(\bm{t_i};\bm{\mu_k},\sigma_k^2) \right]^{\mathbbm{1}{(z_i=k)}}
-\end{equation}
-\end{linenomath}
+$L(\bm{\theta};\bm{t},\bm{z})=\prod_{i=1}^N \prod_{k=0}^K \left[ \pi_k \mathcal{N}(\bm{t_i};\bm{\mu_k},\sigma_k^2) \right]^{\mathbbm{1}{(z_i=k)}}$
 where $\bm{\theta}=(\bm{\mu},\bm{\sigma},\bm{\pi})$ are model parameters, 
 and $\pi_k$ is the mixing weight for component $k$.
 $\bm{t}=(\bm{t_1}, \bm{t_2}, ..., \bm{t_N})$ are the 2D coordinates of each of 
@@ -54,12 +50,8 @@ The weighted complete-data likelihood function, $L_w$, is
 \end{align}
 \end{linenomath}
 where
-\begin{linenomath}
-\begin{align} \label{eqn:weights}
-w_i = \sum_{j \in S_i^q} \text{exp} \left( -\frac{||\bm{t_i}-\bm{t_j}||_2^2}{\nu} \right)
-\end{align}
-\end{linenomath}
-is the weight assigned to photon sample $i$, $S_i^q$ is the set of $q$ 
+$w_i = \sum_{j \in S_i^q} \text{exp} \left( -\frac{||\bm{t_i}-\bm{t_j}||_2^2}{\nu} \right)$
+is the weight assigned to photon $i$, $S_i^q$ is the set of $q$ 
 nearest neighbors of photon $i$, and $\nu$ is a positive scalar.
 The expected value of the weighted complete-data log-likelihood, $Q$, is
 \begin{linenomath}
@@ -121,13 +113,11 @@ reflections and to initialize the event's estimated location for the EM algorith
 
 \noindent
 \textbf{Initialization procedure.}
-The initialization procedure can be summarized as computing 
-\begin{equation}
-\argmax_{x_0,y_0,z_{c0},C} Q
-\end{equation}
+The initialization procedure can be summarized as maximizing $Q$
 over a set of possible event locations and $C \in \{3,4,5\}$ clusters 
 (number of mirror reflections plus the event).
-First, centroids are computed using weighted KMeans with $C$ clusters.
+First, centroids are computed using weighted KMeans with $C$ clusters and the 
+photons' assigned weights.
 Centroids are then classified as either the event, or $+x$, $-x$, $+y$, or $-y$ 
 mirror reflections based on their relative positioning.
 This is done by taking combinations of subsets of centroids and computing the 
@@ -186,11 +176,12 @@ $\bm{\pi}$ is then updated using $\pi_k=\frac{1}{N}\sum_{i=1}^N r_{ik}$.
 Gradients are derived in Supplementary \cref*{sec:like,sec:weighted_like}.
 In both the E and M steps, terms that correspond to a mirror reflection $k$ are 
 included in the computation only if that mirror reflection is present in the image.
-If truncation boundaries are known, then partial image truncations 
-can be incorporated into the algorithm by zeroing $r_{ik}$ for photon
-$i$ that lies in mirror $k$'s truncation zone.
-We do not have accurate knowledge of truncation boundaries in experimental data,
+If truncation boundaries for a given event location can be computed, then partial 
+image truncations can be incorporated into the algorithm by zeroing $r_{ik}$ for 
+photon $i$ that lies in mirror $k$'s truncation zone.
+\textcolor{red}{Attempting to calibrate for precise knowledge of the focal plane and the mirrors' 
+edges is beyond the scope of this work,
 so we only determine the presence of mirror reflections rather than partial 
-truncations in the experiments.
+truncations in the experiments.}
 The kaleidoscopic image model and event localization algorithm are validated on 
 experimental data.

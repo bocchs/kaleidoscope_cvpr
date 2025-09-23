@@ -17,8 +17,8 @@ locations in the smaller volume.
 The camera's lateral field of view (FOV) covers approximately $5 \times 5$ mm at 
 the focal plane.
 The scintillator is positioned such that its apex is in-focus and centered in the 
-camera's FOV, and that the scintillator's edges are parallel with the sensor's 
-respective edges.
+camera's FOV, and that the scintillator's base edges are parallel with the 
+sensor's respective edges.
 There is an air gap of approximately 30 mm between the scintillator and the lens.
 The entire setup is placed inside a light-tight box to keep ambient light out.
 The scintillator is shown in Supplementary Fig. \ref*{fig:scintillator}.
@@ -39,41 +39,26 @@ discard images with less than 60 counts.
 Histograms of counts in an image are shown in Supplementary \cref*{fig:cap_counts_hist}.
 
 \noindent
-\textbf{Algorithm parameter values and stopping criteria.}
-We use $q=10$ nearest neighbors and $\nu=10$ pixels for assigning photon weights 
-using \cref{eqn:weights}.
-Up to ten possible event locations are evaluated in the initialization procedure 
-equispaced over the scintillator's depth.
-During one M-step, we run gradient ascent for 1,000 steps with a step size of 1e-7.
-We run the EM algorithm until the distance in the estimated event location between 
-consecutive steps is less than 0.01 mm, or until 100 steps are taken.
+\textbf{Parameter values.}
+See Supplementary \cref*{sec:params} for how camera parameters are calibrated and
+what algorithm parameters are used on experimental data.
 
-\noindent
-\textbf{Experimental camera parameter calibration.}
-Experimental camera parameter values for $S_1$, $S_2$, and $a$ are calibrated by 
-optimizing $Q$ in a grid search on a selected experimental image.
-We select the image shown in Supplementary \cref*{fig:calibration}, where the 
-event is approximately centered with evident mirror reflections, and we manually 
-remove dark counts.
-The grid search is performed over event locations at $x$-$y$ coordinates 
-$(0,0)$ mm and $z$-coordinates that span the depth of the scintillator.
-This resulted in $S_1=37.24$ mm, $S_2=109.48$ mm, and $a=0.056$ at event location 
-(0, 0, 2.61) mm.
 
 \noindent
 \textbf{Kaleidoscopic image model validation.}
 We select six experimental images and overlay the algorithm's estimated Gaussian 
 components, shown in \cref{fig:example_figures}, to validate the presence of 
 mirror reflections in accordance with the kaleidoscopic model.
+\textcolor{red}{
 Due to non-idealities, truncation zone boundaries in experimental images do not 
 exactly match those derived theoretically using a thin lens.
 We do not attempt to derive truncation lines in experimental images.
-Rather, truncations are evident from missing mirror reflections in the selected images.
+Rather, truncations are evident from missing mirror reflections in the selected images.}
 
 \begin{figure*}
 \centering
-\includegraphics[width=\linewidth]{example_figures.pdf}
-\caption{\textbf{Selected experimental images.} Experimental images overlaid with the algorithm's estimated Gaussians.
+\includegraphics[width=\linewidth]{capture_examples.png}
+\caption{\textbf{Selected experimental images.} Experimental images overlaid with the algorithm's estimated Gaussian components.
 Each dashed red circle is centered on the Gaussian component's mean. 
 The inner and outer circles are one and two standard deviations in radius, respectively.
 Pixels with a photon are enlarged with a $3 \times 3$ filter for visualization purposes.
@@ -82,7 +67,7 @@ Pixels with a photon are enlarged with a $3 \times 3$ filter for visualization p
 \end{figure*}
 
 \noindent
-\textbf{Algorithm validation.}
+\textbf{Localization algorithm validation.}
 Experimental events cannot be controlled, so their ground truth locations are unknown.
 Therefore, to validate that the algorithm is measuring the event's location, we 
 report agreement of multiple measurements of the event's location as follows.
@@ -109,7 +94,10 @@ agreement in event location measurements, where short distances indicate good
 agreement (high precision).
 Selecting images that contain four mirror reflections and at least 60 counts 
 resulted in 2,251 test images.
-Recorded distances are reported in \cref{fig:crossval_error}.
+\textcolor{red}{The median, mean, and standard deviation, respectively, of 
+distances are XXXXX mm, 0.24 mm, and 0.34 mm over 24,761 distances.}
+Distances are reported in a histogram in Supplementary \cref*{fig:crossval_error}.
+
 %Statistics on the distances in Group A over different ranges of photon counts in a 
 %test image are reported in \cref{tab:crossval_thresh_error}.
 
@@ -120,29 +108,15 @@ initialization procedure or to $(0,0,1.5)$ mm.
 We refer to the two initializations as ``regular" and ``fixed", respectively.
 The test images for this convergence experiment consist of all experimental images 
 that contain at least 60 counts, for a total of 4,351 images.
-Distances between estimated event locations using the regular and fixed 
-initialization methods, as well as the number of EM steps taken, are shown in \cref{fig:convergence}.
+\textcolor{red}{The median, mean, and standard deviation, respectively, of the relevant data are as follows:}
+\begin{itemize}
+\item Distances between estimated event locations using the regular and fixed 
+initialization methods: XXXX mm, 0.38 mm, 0.80 mm.
+\item Number of EM steps taken using regular initialization: XXX steps, 9.3 steps, 14.2 steps.
+\item Number of EM steps taken using fixed initialization: XXXXX steps, 13.5 steps, 14.9 steps.
+\end{itemize}
+These data are reported in histograms in Supplementary \cref*{fig:convergence}.
 
-\begin{figure}
-\centering
-\includegraphics[width=\linewidth]{crossval_error_v2.pdf}
-\caption{\textbf{Agreement in event location measurements.} Histogram of distances 
-between mean estimated event location and each image's estimated event location 
-after mirror reflection removals. Mean $\pm$ stdev: 0.24 $\pm$ 0.34 mm, 24,761 distances.
-} 
-\label{fig:crossval_error}
-\end{figure}
-
-\begin{figure*}
-\centering
-\includegraphics[width=\linewidth]{fixed_init_results.pdf}
-\caption{\textbf{Optimization convergence.}
-(a) Distances in estimated event locations between the regular and fixed initialization methods. Mean $\pm$ stdev: $0.38 \pm 0.80$ mm, 4,351 events.
-(b) Number of steps taken in the EM algorithm from the regular initialization point. Mean $\pm$ stdev: $9.3 \pm 14.2$ steps, 4,351 events.
-(c) Number of steps taken in the EM algorithm from the fixed initialization point. Mean $\pm$ stdev: $13.5 \pm 14.9$ steps, 4,351 events.
-} 
-\label{fig:convergence}
-\end{figure*}
 
 
 \iffalse

@@ -15,14 +15,14 @@ measuring events with increased accuracy and robustness using a single camera.
 
 \noindent
 \textbf{Simulated validation of theoretical image truncations.}
-The mirror reflections generated with ray tracing and a thin lens are truncated 
-along the theoretically derived acceptance zones, shown in \cref{fig:trunc_examples}. 
+The mirror reflection images generated with ray tracing and a thin lens are 
+truncated along the theoretically derived acceptance zones, shown in \cref{fig:trunc_examples}. 
 This suggests the theoretical truncation model is correct.
 In \cref{fig:trunc_examples}, the +$x$, -$x$, and -$y$ mirror reflections are 
 partially truncated, while the +$y$ mirror reflection is not truncated.
-Obtaining accurate experimental acceptance zones would require camera 
-calibration for lens distortions, adapting the scintillator's edges accordingly, 
-and precise knowledge of the focal plane.
+%Obtaining accurate experimental acceptance zones would require camera 
+%calibration for lens distortions, adapting the scintillator's edges accordingly, 
+%precise knowledge of the focal plane, and accurate event location estimates.
 
 \noindent
 \textbf{Experimental validation of kaleidoscopic image model.}
@@ -58,34 +58,37 @@ this paper.
 Since internal reflection occurs at a large incidence angle, the 
 mirror reflection of an internal reflection will likely exist 
 outward from the optical axis away from mirror reflections formed 
-without internal reflection. 
+without internal reflection at the scintillator's base surface. 
 The camera's FOV in the experiments is limited so that we do not 
-expect to image mirror reflections that follow from internal reflections.
+expect to image mirror reflections that follow from internal reflections at the 
+scintillator's base surface.
 Imaging internal reflections will increase light collection but complicate the 
 captured image.
 
 \noindent
 \textbf{Experimental validation of localization algorithm.}
-The results in \cref{fig:crossval_error} show that most distances between the mean 
-and individual estimated event locations are small, demonstrating an agreement in 
+The distances between the mean and individual estimated event locations over 
+images with removed mirror reflections are small, demonstrating an agreement in 
 event location measurements among different images of the same event with removed 
 mirror reflections.
-This agreement suggests the algorithm is in fact estimating the event's location 
-and not spurious light sources.
-Such a result would be unlikely if images contained spurious light that does not 
-originate from an event or that that does not follow the kaleidoscopic model.
+This agreement demonstrates the algorithm is in fact measuring the event's 
+location and not spurious light sources.
+Such a result would be unlikely if the algorithm were not measuring the event, or 
+if images were of spurious light that does not originate from an event or follow 
+the kaleidoscopic model.
 The results also show that that mirror reflections provide robustness in 
 addition to increased photon counts.
 
-The mean distance in event location estimates between regular and fixed 
-initialization points is small, shown in \cref{fig:convergence}a.
-This indicates that the gradient ascent optimization during the M-step does indeed step toward the event location and approaches it.
-\cref{fig:convergence}b,c indicate that setting the initialization point using the 
-algorithm's initialization procedure results in convergence with fewer EM steps 
-because of its proximity to the event compared to a fixed initialization point. 
-Slightly elevated frequency in convergence distances between 1 and 2 mm shown in 
-\cref{fig:convergence}a indicates that a fixed initialization can result in 
-convergence at a local optimum rather than the event location.
+The distances in event location estimates between regular and fixed 
+initialization points are small.
+This indicates that the gradient ascent optimization during the M-step does indeed 
+step toward the event location and approaches it.
+Setting the initialization point using the algorithm's initialization procedure 
+results in convergence with fewer EM steps because of its proximity to the event 
+compared to a fixed initialization point. 
+%Slightly elevated frequency in convergence distances between 1 and 2 mm shown in 
+%Supplementary \cref*{fig:convergence}a indicates that a fixed initialization can 
+%result in convergence at a local optimum rather than the event location.
 
 \noindent
 \textbf{Limitations and future work.}
@@ -111,38 +114,4 @@ techniques such as in the Compton camera or neutron scatter camera.
 Future work may consider how to model images that contain multiple events in a 
 kaleidoscopic scintillator.
 
-\textcolor{red}{The calibration procedure resulted in Gaussian mixture model (GMM) components 
-whose centroids are close to but not exactly centered on the mirror reflections in 
-the calibration image in \cref{fig:calibration}.
-Similarly in \cref{fig:example_figures}c, the Gaussian component's centroid is 
-slightly offset from the -$y$ mirror reflection.
-This is likely due to $Q$'s definition and lens distortion.
-An event's location influences both the mean and standard deviation of its image.
-$Q$ takes both parameters into account jointly over the event and all mirror 
-reflections, so the optimal $Q$ value may not correspond to components in the GMM 
-that are all centered on the event or mirror reflections.
-Lens distortions may also cause shifts in the event and mirror reflections that 
-are not accounted for in the model.
-Nonetheless, GMM components are overlaid accurately on the event and mirror 
-reflections in \cref{fig:example_figures}a,b,d,e,f with the same calibrated parameters.}
 
-\iffalse
-\textcolor{red}{
-While this work models one event, multiple events from a single particle or 
-gamma-ray can occur. 
-For example, a neutron or gamma-ray can scatter one or more times before exiting 
-or being absorbed in the scintillator.
-Measuring a pair of scatter-absorption events from a single particle forms the 
-basis for backprojection to determine the particle's trajectory and the radiation 
-source's location.
-In general, the ability to measure multiple, simultaneous events allows to 
-accurately measure how and where a particle interacted in the scintillator.
-Adequate energy, spatial, and time resolutions are required to perform the Compton backprojection.
-SPAD camera designs have sufficient spatial and time resolutions, but 
-they are limited by low light collection.
-Now, the kaleidoscopic scintillator may provide the light collection levels needed 
-to perform these advanced techniques with a SPAD camera.
-Future work may consider how to model images that contain multiple events in a 
-kaleidoscopic scintillator.
-}
-\fi
