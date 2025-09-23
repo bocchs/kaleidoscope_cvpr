@@ -49,8 +49,8 @@ influence of sparsely distributed dark counts.
 The weighted complete-data likelihood function, $L_w$, is
 \begin{linenomath}
 \begin{align}
-L_w(\bm{\theta};\bm{t},\bm{z}) &= \prod_{i=1}^N \prod_{k=0}^K \left[ \pi_k \mathcal{N}(\bm{t_i};\bm{\mu_k},\frac{1}{w_i}\sigma_k^2) \right]^{\mathbbm{1}{(z_i=k)}} \\
-&= \prod_{i=1}^N \prod_{k=0}^K \left[ \pi_k \frac{w_i}{2\pi{\sigma_k}^2} \text{exp}\left( -\frac{w_i}{2{\sigma_k}^2} ||\bm{t_i}-\bm{\mu_k}||_2^2 \right) \right]^{\mathbbm{1}{(z_i=k)}}
+&L_w(\bm{\theta};\bm{t},\bm{z}) = \prod_{i=1}^N \prod_{k=0}^K \left[ \pi_k \mathcal{N}(\bm{t_i};\bm{\mu_k},\frac{1}{w_i}\sigma_k^2) \right]^{\mathbbm{1}{(z_i=k)}} \\
+&= \prod_{i=1}^N \prod_{k=0}^K \left[ \pi_k \frac{w_i}{2\pi{\sigma_k}^2} \text{exp}\left( -\frac{w_i}{2{\sigma_k}^2} ||\bm{t_i}-\bm{\mu_k}||_2^2 \right) \right]^{\mathbbm{1}{(z_i=k)}}  \notag
 \end{align}
 \end{linenomath}
 where
@@ -63,11 +63,12 @@ is the weight assigned to photon sample $i$, $S_i^q$ is the set of $q$
 nearest neighbors of photon $i$, and $\nu$ is a positive scalar.
 The expected value of the weighted complete-data log-likelihood, $Q$, is
 \begin{linenomath}
-\begin{equation} \label{eqn:Q_eqn}
-\begin{aligned}
-Q & = E_{\bm{z}|\bm{t}}\left[\log L_w(\bm{\theta};\bm{t},\bm{z})\right] \\ & = \sum_i \sum_k r_{ik} \left[ \text{log}(\pi_k) + \text{log}(w_i) - \text{log}(2\pi{\sigma_k}^2) - \frac{w_i}{2{\sigma_k}^2}||\bm{t_i}-\bm{\mu_k}||_2^2 \right]
-\end{aligned}
-\end{equation}
+%\begin{equation}
+\begin{align} \label{eqn:Q_eqn}
+Q & = E_{\bm{z}|\bm{t}}\left[\log L_w(\bm{\theta};\bm{t},\bm{z})\right] \\ & = \sum_i \sum_k r_{ik} \bigg[ \text{log}(\pi_k) + \text{log}(w_i) - \text{log}(2\pi{\sigma_k}^2) \notag \\ 
+&\quad \quad \quad \quad \quad \quad - \frac{w_i}{2{\sigma_k}^2}||\bm{t_i}-\bm{\mu_k}||_2^2 \bigg] \notag
+\end{align}
+%\end{equation}
 \end{linenomath}
 where 
 \begin{linenomath}
