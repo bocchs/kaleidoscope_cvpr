@@ -66,33 +66,6 @@ SPAD cameras could potentially make high-resolution measurements of individual
 events in a thick scintillator volume and perform advanced radiation imaging 
 techniques, but they are limited by low levels of light collection.
 
-Reflective surfaces and scintillator geometry have been considered for increasing 
-light collection in various designs.
-%Retroreflectors have been shown to improve light collection in parallelpiped and 
-%pyramidal frustum scintillators and a position-sensitive photomultiplier (PSPMT) 
-%sensor \cite{ros2014retroreflector}. 
-Retroreflectors have been shown to improve light collection along with spatial 
-and energy resolution in monolithic scintillators \cite{mcelroy2002use,heemskerk2009micro,ros2014retroreflector,gonzalez2017performance}.
-Specular and diffuse reflectors have been tested in the context of improving 
-reflection models for simulation purposes \cite{janecek2010simulating,roncali2017integrated,trigila2021optimization}.
-These studies use designs where a sensor is coupled to the scintillator's surface.
-To the best of our knowledge, reflective surfaces have not been reported for 
-collecting additional light in camera designs.
-Adding diffuse surfaces will reflect light into the camera but obfuscate the 
-event's image and cause a loss in spatial information.
-Retroreflector surfaces better preserve spatial information but can no more than 
-double the amount of captured light.
-Retroreflectors also add blur that may degrade spatial resolution.
-Current camera designs only capture light emitted directly to the camera,
-which is a small fraction of all the light emitted from an event 
-\cite{bocchieri2024scintillation, yamamoto2023development, d2021novel, gao2023novel, losko2021new,adams2017gamma,balasubramanian2022x,gustschin2024event}.
-The goal of this work is to increase light collection by capturing additional 
-light from an event that is emitted away from the camera.
-The challenge lies in doing so without losing the event's spatial information.
-%Another option for increasing light collection would be to surround the 
-%scintillator with multiple cameras.
-%However, the extra camera hardware increases overall cost and complexity and may 
-%cause incident particles to scatter before reaching the scintillator.
 
 We propose to use a kaleidoscopic scintillator geometry with specular surfaces to 
 redirect light into the camera.
@@ -112,18 +85,6 @@ The task is to determine the event's 3D position from the resulting image.
 
 %With sufficient light, complex signatures such as multi-interaction events, 
 %particle tracks, and Cherenkov photons could be measured.
-
-
-Mirrors and kaleidoscopic designs have been used for stereo vision \cite{nene1998stereo, gluckman1999planar, gluckman2002rectified} 
-and multi-view 3D reconstructions \cite{reshetouski2011three, ahn2021kaleidoscopic, ahn2023neural, takahashi2021structure, bangay2004kaleidoscope, mitsumoto19923}
-of an extended object using one picture from a single camera.
-A ``light-trap" design consists of mirrors oriented such that light entering the 
-trap reaches nearly every position inside the trap \cite{xu2018trapping}.
-Time-of-flight is used to reconstruct a 3D object inside the trap.
-In fact, the pyramid-shaped light-trap was found to provide the best object 
-coverage, which is the same shape as the kaleidoscope we use in this work.
-Here, we apply the kaleidoscope in the photon-starved setting of scintillation 
-event imaging and form a radiation detection problem as a computer vision problem.
 
 
 In this paper, we make the following contributions: 
@@ -156,4 +117,46 @@ Gaussian mixture model whose likelihood is maximized to estimate the event's loc
 \end{figure}
 
 }{}
+
+\section{Related Work}
+
+\textbf{Scintillation light collection.} Reflective surfaces and scintillator geometry have been considered for increasing 
+light collection in various designs.
+%Retroreflectors have been shown to improve light collection in parallelpiped and 
+%pyramidal frustum scintillators and a position-sensitive photomultiplier (PSPMT) 
+%sensor \cite{ros2014retroreflector}. 
+Retroreflectors have been shown to improve light collection along with spatial 
+and energy resolution in monolithic scintillators \cite{mcelroy2002use,heemskerk2009micro,ros2014retroreflector,gonzalez2017performance}.
+Specular and diffuse reflectors have been tested in the context of improving 
+reflection models for simulation purposes \cite{janecek2010simulating,roncali2017integrated,trigila2021optimization}.
+These studies use designs where a sensor is coupled to the scintillator's surface.
+To the best of our knowledge, reflective surfaces have not been reported for 
+collecting additional light in camera designs.
+Adding diffuse surfaces will reflect light into the camera but obfuscate the 
+event's image and cause a loss in spatial information.
+Retroreflector surfaces better preserve spatial information but can no more than 
+double the amount of captured light.
+Retroreflectors also add blur that may degrade spatial resolution.
+Current camera designs only capture light emitted directly to the camera,
+which is a small fraction of all the light emitted from an event 
+\cite{bocchieri2024scintillation, yamamoto2023development, d2021novel, gao2023novel, losko2021new,adams2017gamma,balasubramanian2022x,gustschin2024event}.
+The goal of this work is to increase light collection by capturing additional 
+light from an event that is emitted away from the camera.
+The challenge lies in doing so without losing the event's spatial information.
+%Another option for increasing light collection would be to surround the 
+%scintillator with multiple cameras.
+%However, the extra camera hardware increases overall cost and complexity and may 
+%cause incident particles to scatter before reaching the scintillator.
+
+\noindent
+\textbf{Kaleidoscopic methods.} Mirrors and kaleidoscopic designs have been used for stereo vision \cite{nene1998stereo, gluckman1999planar, gluckman2002rectified} 
+and multi-view 3D reconstructions \cite{reshetouski2011three, ahn2021kaleidoscopic, ahn2023neural, takahashi2021structure, bangay2004kaleidoscope, mitsumoto19923}
+of an extended object using one picture from a single camera.
+A ``light-trap" design consists of mirrors oriented such that light entering the 
+trap reaches nearly every position inside the trap \cite{xu2018trapping}.
+Time-of-flight is used to reconstruct a 3D object inside the trap.
+In fact, the pyramid-shaped light-trap was found to provide the best object 
+coverage, which is the same shape as the kaleidoscope we use in this work.
+Here, we apply the kaleidoscope in the photon-starved setting of scintillation 
+event imaging and form a radiation detection problem as a computer vision problem.
 
