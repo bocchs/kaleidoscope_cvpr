@@ -71,7 +71,7 @@ r_{ik} & = E_{\bm{z}|\bm{t}}[\mathbbm{1}{(z_i=k)}] \\ & = \frac{\pi_k \mathcal{N
 \end{equation}
 \end{linenomath}
 gives the posterior distribution of $\bm{z}$.
-$r_{ik}$ is the probability that photon $i$ comes from event $k$, given 
+$r_{ik}$ is the probability that photon $i$ comes from component $k$, given 
 the current parameter values.
 
 The location of each mirror reflection at $\bm{p_k}$ for $k=1...K$ generated from 
@@ -176,10 +176,11 @@ $\bm{\pi}$ is then updated using $\pi_k=\frac{1}{N}\sum_{i=1}^N r_{ik}$.
 Gradients are derived in Supplementary \cref*{sec:like,sec:weighted_like}.
 In both the E and M steps, terms that correspond to a mirror reflection $k$ are 
 included in the computation only if that mirror reflection is present in the image.
+\textcolor{red}{
 If truncation boundaries for a given event location can be computed, then partial 
 image truncations can be incorporated into the algorithm by zeroing $r_{ik}$ for 
 photon $i$ that lies in mirror $k$'s truncation zone.
-\textcolor{red}{Attempting to calibrate for precise knowledge of the focal plane and the mirrors' 
+Attempting to calibrate for precise knowledge of the focal plane and the mirrors' 
 edges is beyond the scope of this work,
 so we only determine the presence of mirror reflections rather than partial 
 truncations in the experiments.}

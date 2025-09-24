@@ -49,6 +49,7 @@ what algorithm parameters are used on experimental data.
 We select six experimental images and overlay the algorithm's estimated Gaussian 
 components, shown in \cref{fig:example_figures}, to validate the presence of 
 mirror reflections in accordance with the kaleidoscopic model.
+Additional experimental images are shown in Supplementary \cref*{fig:example_figures_sup}.
 \textcolor{red}{
 Due to non-idealities, truncation zone boundaries in experimental images do not 
 exactly match those derived theoretically using a thin lens.
@@ -94,8 +95,8 @@ agreement in event location measurements, where short distances indicate good
 agreement (high precision).
 Selecting images that contain four mirror reflections and at least 60 counts 
 resulted in 2,251 test images.
-\textcolor{red}{The median, mean, and standard deviation, respectively, of 
-distances are XXXXX mm, 0.24 mm, and 0.34 mm over 24,761 distances.}
+The median, mean, and standard deviation, respectively, of 
+distances are 0.12 mm, 0.24 mm, and 0.34 mm over 24,761 distances.
 Distances are reported in a histogram in Supplementary \cref*{fig:crossval_error}.
 
 %Statistics on the distances in Group A over different ranges of photon counts in a 
@@ -108,12 +109,12 @@ initialization procedure or to $(0,0,1.5)$ mm.
 We refer to the two initializations as ``regular" and ``fixed", respectively.
 The test images for this convergence experiment consist of all experimental images 
 that contain at least 60 counts, for a total of 4,351 images.
-\textcolor{red}{The median, mean, and standard deviation, respectively, of the relevant data are as follows:}
+The median, mean, and standard deviation, respectively, of the relevant data are as follows:
 \begin{itemize}
 \item Distances between estimated event locations using the regular and fixed 
-initialization methods: XXXX mm, 0.38 mm, 0.80 mm.
-\item Number of EM steps taken using regular initialization: XXX steps, 9.3 steps, 14.2 steps.
-\item Number of EM steps taken using fixed initialization: XXXXX steps, 13.5 steps, 14.9 steps.
+initialization methods: 0.007 mm, 0.38 mm, 0.80 mm.
+\item Number of EM steps taken using regular initialization: 4 steps, 9.3 steps, 14.2 steps.
+\item Number of EM steps taken using fixed initialization: 8 steps, 13.5 steps, 14.9 steps.
 \end{itemize}
 These data are reported in histograms in Supplementary \cref*{fig:convergence}.
 

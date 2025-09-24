@@ -46,24 +46,8 @@ Dark counts in \cref{fig:example_figures} are higher than the median dark count
 rate of 4 pixels per image.
 This could be due to several factors, including increased cross talk from higher 
 photon collection, fluorescence from other particles or gamma-rays occurring at 
-the beginning or end of an image's integration time, imperfect mirror reflections, 
+the beginning or end of an image's exposure time, imperfect mirror reflections, 
 or internal reflections.
-
-Internal reflections may be contributing to background noise in addition to dark counts.
-However, internal reflections at the scintillator's base surface could possibly 
-appear in an image as another mirror reflection of the event.
-An internal reflection has the same effect as adding a mirror to the 
-scintillator's base surface, which can be modeled with the theory introduced in 
-this paper.
-Since internal reflection occurs at a large incidence angle, the 
-mirror reflection of an internal reflection will likely exist 
-outward from the optical axis away from mirror reflections formed 
-without internal reflection at the scintillator's base surface. 
-The camera's FOV in the experiments is limited so that we do not 
-expect to image mirror reflections that follow from internal reflections at the 
-scintillator's base surface.
-Imaging internal reflections will increase light collection but complicate the 
-captured image.
 
 \noindent
 \textbf{Experimental validation of localization algorithm.}
@@ -113,5 +97,21 @@ Measuring multi-event cases is needed to perform advanced radiation imaging
 techniques such as in the Compton camera or neutron scatter camera.
 Future work may consider how to model images that contain multiple events in a 
 kaleidoscopic scintillator.
+
+Internal reflections at the scintillator's base surface could possibly 
+appear in an image after reflecting off a mirrored surface.
+An internal reflection has the same effect as adding a mirror to the 
+scintillator's base surface, which can be modeled with the theory introduced in 
+this paper.
+Since internal reflection occurs at incidence angles higher than the critical 
+angle, the mirror reflection of an internal reflection will exist away from 
+first-order mirror reflections in $x$ and $y$ directions along the mirror's normal vector.
+The camera's FOV in the experiments is limited so that we do not 
+expect to image mirror reflections that follow from internal reflections at the 
+scintillator's base surface.
+Hardware configurations with a larger camera FOV may capture internal reflections 
+and have to account for them.
+Imaging internal reflections will increase light collection but complicate the 
+captured image.
 
 
