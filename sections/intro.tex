@@ -1,5 +1,22 @@
 \section{Introduction}
 
+\ifthenelse{\boolean{figs_in_text}}{
+
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth]{teaser_pipeline.jpg}
+\caption{\textbf{Overview of image capture and event localization method.}
+An image is composed of light that is emitted from the scintillation event and 
+reaches the camera either directly or after reflecting off mirrors of a 
+kaleidoscopic scintillator.
+The spatial relationship between the event and mirror reflections is embedded in a 
+Gaussian mixture model whose likelihood is maximized to estimate the event's location.
+} 
+\label{fig:teaser}
+\end{figure}
+
+}{}
+
 High energy particles are created in nuclear processes including man-made 
 devices, cosmic radiation, and natural interactions. 
 There is a wide variety of particles with varying properties. 
@@ -100,23 +117,6 @@ gamma-ray source.
 \end{itemize}
 An overview of the method is illustrated in \cref{fig:teaser}.
 
-
-\ifthenelse{\boolean{figs_in_text}}{
-
-\begin{figure}
-\centering
-\includegraphics[width=\linewidth]{teaser_pipeline.jpg}
-\caption{\textbf{Overview of image capture and event localization method.}
-An image is composed of light that is emitted from the scintillation event and 
-reaches the camera either directly or after reflecting off mirrors of a 
-kaleidoscopic scintillator.
-The spatial relationship between the event and mirror reflections is embedded in a 
-Gaussian mixture model whose likelihood is maximized to estimate the event's location.
-} 
-\label{fig:teaser}
-\end{figure}
-
-}{}
 
 \section{Related Work}
 
