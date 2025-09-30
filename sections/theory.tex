@@ -4,18 +4,14 @@
 Without loss of generality, we consider a square pyramid scintillator throughout 
 this paper. 
 Each face of the scintillator, except for the base of the pyramid, is a specular surface.
-We assume the scintillator's index of refraction is $n=1$. 
-We correct for the scintillator's true $n>1$ by modeling a pyramid with decreased 
-height and increased opening angle at the apex based on $n$.
-The true depth of an event measured in the smaller apparent volume can then be 
-corrected for using $n$.
+The scintillator has an index of refraction $n>1$ and height $h$.
 
 \subsection{Imaging configuration and model}
 
 The world coordinate system's origin is set at the pyramid's apex with the 
 $z$-axis directed perpendicular toward the pyramid's base surface.
 The camera coordinate system's origin is at the center of the lens with its 
-$z$-axis directed toward the pyramid in the opposite direction of the world's $z$-axis.
+$z$-axis directed toward the scintillator in the opposite direction of the world's $z$-axis.
 The $x$ and $y$ axes among the two coordinate systems are in the same directions, 
 so transforming a point between the world and camera coordinate systems is 
 carried out by adding or subtracting the $z$-coordinate with the distance between 
@@ -25,7 +21,7 @@ coordinate system as $z_c$.
 We use a thin lens to model the camera.
 Three important planes to note are the focal plane, the thin lens plane, and the 
 sensor plane.
-The focal plane is set at the pyramid's apex at $z_w=0$ mm.
+The focal plane is set at the apparent depth of the pyramid's apex at $z_w=h-h/n$.
 A thin lens with diameter $A$ is placed at a distance $S_1$ from the focal plane. 
 The sensor is placed at a distance $S_2$ from the lens.
 The lens' focal length is set to $f=(S_1^{-1}+S_2^{-1})^{-1}$.
@@ -55,10 +51,17 @@ the images of an event and its mirror reflections exhibit defocus blur and
 have nonzero diameters.
 An image's diameter on the sensor varies according to the event's distance from 
 the focal plane, following the circle of confusion model.
-For an event at $(x_0,y_0,z_{c0})$, 
+Note that the camera sees an event at its apparent depth rather than its real 
+depth due to the scintillator's index of refraction.
+An event's real and apparent locations are separated by $d-d/n$ along the 
+$z$-dimension, where $d$ is the event's real depth in the scintillator from the
+base surface.
+We denote an apparent location using the superscript ``$(a)$" and a real location 
+by the lack of a superscript.
+For an event at an apparent location $(x_0,y_0,z_{c0}^{(a)})$, 
 the circle of confusion model yields
 \begin{equation} \label{eqn:circ_of_conf}
-c=A\frac{S_2}{S_1}\frac{|S_1-z_{c0}|}{z_{c0}}
+c=A\frac{S_2}{S_1}\frac{|S_1-z_{c0}^{(a)}|}{z_{c0}^{(a)}}
 \end{equation}
 where $c$ is the image diameter at the sensor.
 
@@ -72,8 +75,9 @@ reflections, as well as their image on the sensor using a thin lens model.
 
 \subsection{Mirror reflections and apertures}
 
-Consider an event located at $\bm{p_0}$.
-Mirror $k$ with normal vector $\bm{n_k}$ produces a mirror reflection located at 
+Consider the real location of an event at $\bm{p_0}$.
+Mirror $k$ with normal vector $\bm{n_k}$ produces a mirror reflection with a real 
+location at 
 $\bm{p_k}=\bm{T_k}\bm{p_0}$
 where
 \begin{equation} \label{eqn:ref_trans}
@@ -116,9 +120,10 @@ The mirror reflection is located within the focal plane (a,b,e) or beyond the fo
 All light that forms the mirror reflection reaches the sensor (a,c).
 Some light that would form the mirror reflection is stopped at the mirror's edge 
 and truncated on the sensor (b,d).
-Some light that would form a double mirror reflection is stopped at both mirrors' 
-edges and truncated on the sensor (e). 
-The mirror for the second reflection is illustrated along the light's path.} 
+Some light that would form a second-order mirror reflection is stopped at both 
+mirrors' edges and truncated on the sensor (e). 
+The mirror for the second reflection in (e) is illustrated along the light's path.
+Illustrations are drawn with scintillator index of refraction $n=1$.} 
 \label{fig:trunc_theory}
 \end{figure*}
 
@@ -143,8 +148,10 @@ A 2D view of truncations from multiple reflections is shown in \cref{fig:trunc_t
 Consider an event's mirror reflection located at $\bm{p_k}$ generated from mirror $k$.
 Each edge of the mirror may impose a truncation line on the camera sensor.
 A truncation line on the sensor, $l_\text{sensor}$, is determined as follows.
-Denote a truncation plane, $P_{\text{trunc}}$, that contains $\bm{p_k}$ and the 
+Denote a plane, $P_1$, that contains $\bm{p_k}$ and the 
 mirror's edge.
+Denote the line that intersects $P_1$ and the scintillator's base surface as $l_1$.
+Compute the plane, $P_{\text{trunc}}$, that contains $l_1$ and $\bm{p_k}^{(a)}$.
 Denote the side of $P_{\text{trunc}}$ that faces away from the mirror using the 
 normal vector $\bm{n_{\text{trunc}}}$.
 Compute the intersection between $P_{\text{trunc}}$ and the focal plane to be the
@@ -155,12 +162,13 @@ Scale $l_\text{focal}$ by the magnification, $m=-\frac{S_2}{S_1}$, to obtain $l_
 Scale $\bm{n_{\text{focal}}}$ by $m$ to obtain $\bm{n_{\text{sensor}}}$.
 
 The truncation side of $l_\text{sensor}$ where photons do not arrive depends on 
-which side of the focal plane that $\bm{p_k}$ is located.
-If $\bm{p_k}$ is beyond the focal plane away from the lens at a distance $d>S_1$ 
-from the lens, 
+which side of the focal plane that $\bm{p_k}^{(a)}$ is located.
+If $\bm{p_k}^{(a)}$ is beyond the focal plane away from the lens at a distance 
+greater than $S_1$ from the lens, 
 then the side of $l_\text{sensor}$ pointed to by $\bm{n_{\text{sensor}}}$ is 
 truncated and contains no photon arrivals (\cref{fig:trunc_theory}b).
-If $\bm{p_k}$ is between the focal plane and lens at a distance $d<S_1$ from the lens, 
+If $\bm{p_k}^{(a)}$ is between the focal plane and lens at a distance less than 
+$S_1$ from the lens, 
 then the side of $l_\text{sensor}$ opposite of $\bm{n_{\text{sensor}}}$ 
 is truncated and contains no photon arrivals (\cref{fig:trunc_theory}d).
 

@@ -12,15 +12,16 @@ $\sigma=ac$, where $a$ is a proportionality constant determined by the
 optical configuration, and $c$ is the circle of confusion diameter in \cref{eqn:circ_of_conf}.
 $\bm{t}$ is a 2D coordinate on the sensor plane.
 
-An event or mirror reflection located at $\bm{p_k}=(x_k,y_k,z_{ck})$ is modeled as 
+An event or mirror reflection at apparent location 
+$\bm{p_k}^{(a)}=(x_k,y_k,z_{ck}^{(a)})$ is modeled as 
 a point source of light, so its image on the sensor consists of photon arrivals 
 spatially distributed over a 2D Gaussian with mean 
 \begin{equation} \label{eqn:mu}
-\bm{\mu_k}=\left[ -\frac{S_2}{z_{ck}}x_k, -\frac{S_2}{z_{ck}}y_k \right]
+\bm{\mu_k}=\left[ -\frac{S_2}{z_{ck}^{(a)}}x_k, -\frac{S_2}{z_{ck}^{(a)}}y_k \right]
 \end{equation}
 and standard deviation 
 \begin{equation} \label{eqn:stdev}
-\sigma_k=aA\frac{S_2}{S_1}\frac{|S_1-z_{ck}|}{z_{ck}}
+\sigma_k=aA\frac{S_2}{S_1}\frac{|S_1-z_{ck}^{(a)}|}{z_{ck}^{(a)}}
 \end{equation}
 where \cref{eqn:mu} is derived from perspective projection.
 %\textcolor{red}{

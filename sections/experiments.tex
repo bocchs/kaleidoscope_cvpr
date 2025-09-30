@@ -8,14 +8,11 @@ integration time.
 The lens is a 50 mm focal length Nikkor lens set to a f/1.2 aperture.
 The scintillator is a GAGG(Ce)-HL crystal (Epic Crystal), which has a 150 ns decay 
 constant, a 530 nm emission peak, and an index of refraction of 1.91.
-Its geometry is a square pyramid with a 20 mm wide base and 5.77 mm 
-height and a 120 degree opening angle at the apex.
+Its geometry is a square pyramid with a 20 mm wide base, 5.77 mm 
+height, and a 120 degree opening angle at the apex.
 Four surfaces of the scintillator are coated with enhanced specular reflector.
-We account for the scintillator's index of refraction by assuming the 
-scintillator's height is $5.77$ mm  / 1.91 $=3.02$ mm and compute apparent event 
-locations in the smaller volume.
-The camera's lateral field of view (FOV) covers approximately $5 \times 5$ mm at 
-the focal plane.
+The camera's lateral field of view (FOV) covers approximately $5.5 \times 5.5$ mm 
+at the focal plane.
 The scintillator is positioned such that its apex is in-focus and centered in the 
 camera's FOV, and that the scintillator's base edges are parallel with the 
 sensor's respective edges.
@@ -105,7 +102,7 @@ Distances are reported in a histogram in Supplementary \cref*{fig:crossval_error
 We test for the algorithm's convergence by using two different initialization 
 methods for $\bm{p_0}$. 
 We either initialize $\bm{p_0}$ adaptively to the image as in the algorithm's 
-initialization procedure or to $(0,0,1.5)$ mm.
+initialization procedure or to $(0,0,1.5)$ mm in world coordinates.
 We refer to the two initializations as ``regular" and ``fixed", respectively.
 The test images for this convergence experiment consist of all experimental images 
 that contain at least 60 counts, for a total of 4,351 images.
